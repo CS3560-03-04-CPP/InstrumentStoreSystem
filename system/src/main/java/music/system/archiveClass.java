@@ -1,3 +1,11 @@
+package music.system;
+
+public class archiveClass {
+    private String instrumentID;
+    private String instrumentName;
+    private String instrumentType;
+    private double price;
+    private int quantity;
 
  // Constructor to initialize an instrument record
     public archiveClass(String instrumentID, String instrumentName, String instrumentType, double price, int quantity) {
@@ -7,7 +15,6 @@
         this.price = price;
         this.quantity = quantity;
     }
-
 
     // Adds a new instrument to the inventory
     public void addInstrument(String instrumentID, String instrumentName, String instrumentType, double price, int quantity) {
