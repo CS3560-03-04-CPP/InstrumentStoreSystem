@@ -4,29 +4,53 @@ import java.util.Date;
 
 public class PurchaseRecord {
     
-    private String invoiceNumber;
-    private Date date;
+    private String invoiceNumber; // Unique identifier for the purchase record
+    private Date date; // Date of the purchase
 
     public PurchaseRecord(String invoiceNumber, Date date) {
         this.invoiceNumber = invoiceNumber;
         this.date = date;
     }
 
+     // Getters and Setters
+
+    /**
+     * Gets the invoice number of the purchase record.
+     *
+     * @return The invoice number
+     */
     public String getInvoiceNumber() {
         return invoiceNumber;
     }
 
+    /**
+     * Sets the invoice number of the purchase record.
+     *
+     * @param invoiceNumber The invoice number to set
+     */
     public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
 
+    /**
+     * Gets the date of the purchase record.
+     *
+     * @return The date of the purchase
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Sets the date of the purchase record.
+     *
+     * @param date The date of the purchase to set
+     */
     public void setDate(Date date) {
         this.date = date;
     }
+
+    //Extra methods For Debugging.
 
     @Override
     public String toString() {
