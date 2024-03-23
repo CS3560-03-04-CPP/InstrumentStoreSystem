@@ -31,7 +31,7 @@ public class ItemPhoto {
 	//get the image file
 	//return the image file
 	public File getImage() {
-		return new File("hello.txt");
+		return file;
 	}
 
 	//check if the file is valid and an Image can be opened with it
