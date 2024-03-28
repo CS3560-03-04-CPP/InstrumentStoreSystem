@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="music.system.InventoryPage">
+   <children>
+      <Accordion layoutX="183.0" layoutY="94.0" />
+      <MenuBar layoutY="2.0" prefHeight="13.0" prefWidth="1920.0">
+
+        <menus>
+          <Menu mnemonicParsing="false" text="System">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Sign Out" />
+            </items>
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Inventory Managerment">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Add Instrument" />
+            </items>
+            <items>
+              <MenuItem mnemonicParsing="false" text="Remove Instrument" />
+            </items>
+            <items>
+              <MenuItem mnemonicParsing="false" text="Edit Instrument Details" />
+            </items>
+            <items>
+              <MenuItem mnemonicParsing="false" text="Archive Instrument" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Arcive">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Arcive Instrument" />
+            </items>
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete Arcived Instrument" />
+            </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Sale Transactions">
+            <items>
+              <MenuItem mnemonicParsing="false" text="New Transaction" />
+            </items>
+            <items>
+              <MenuItem mnemonicParsing="false" text="Records" />
+            </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Store Transactions">
+            <items>
+              <MenuItem mnemonicParsing="false" text="New Transaction" />
+            </items>
+            <items>
+              <MenuItem mnemonicParsing="false" text="Records" />
+            </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Repair">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Schedule Repair" />
+            </items>
+            <items>
+              <MenuItem mnemonicParsing="false" text="Repair Status" />
+            </items>
+            </Menu>
+           <Menu mnemonicParsing="false" text="Analytics">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Generate Analytics" />
+            </items>
+            <items>
+              <MenuItem mnemonicParsing="false" text="Veiw Past Analytics" />
+            </items>
+          </Menu>
+          
+        </menus>
+      </MenuBar>
+      <PieChart layoutX="520.0" layoutY="290.0" />
+   </children>
+</Pane>
