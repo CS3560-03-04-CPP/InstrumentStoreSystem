@@ -19,24 +19,24 @@ public class App extends Application {
     // Static fields for storing scene and primary stage
     private static Scene scene;
     private static Stage primaryStage;
+    private static int currentRootPage;
 
     @Override
     public void start(@SuppressWarnings("exports") Stage stage) throws IOException {
 
         primaryStage = stage;
+        currentRootPage = 0;
 
         // Loading the SignInPage FXML file and creating a scene
         scene = new Scene(loadFXML("SignInPage"), 600, 300);
 
          // Setting stage properties
-        stage.setMaxHeight(400);
-        stage.setMaxWidth(660);
-        stage.setMinHeight(400);
-        stage.setMinWidth(660);
+        setSizeSignIn();
         stage.setTitle("StoreInventorySystem");
         stage.setScene(scene);
-        centerStageOnScreen(stage);
         stage.show();
+
+        centerStageOnScreen(stage);
     }
 
     // Method to set the root of the scene
@@ -46,26 +46,53 @@ public class App extends Application {
     
         if (root instanceof Pane) {
             Pane pane = (Pane) root;
-            primaryStage.setWidth(pane.getPrefWidth());
-            primaryStage.setHeight(pane.getPrefHeight());
-            primaryStage.setMaxHeight(1080);
-            primaryStage.setMaxWidth(1920);
-            primaryStage.setMinHeight(400);
-            primaryStage.setMinWidth(660);
+
+            if (currentRootPage % 2 == 0)
+                setSizeInventory(pane);
+            else
+                setSizeSignIn();
+        
         }
+
+        currentRootPage++;
+        centerStageOnScreen(primaryStage);
+        
     }
 
-    // Method to center the stage on the screen
-    private void centerStageOnScreen(Stage stage) {
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
-        stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
-    }
 
     // Method to load FXML file
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
+    }
+
+    public static void setSizeSignIn()
+    {
+        primaryStage.setMaxHeight(400);
+        primaryStage.setMaxWidth(660);
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(660);
+
+    }
+    public static void setSizeInventory(@SuppressWarnings("exports") Pane pane)
+    {
+        double prefWidth = Math.min(pane.getPrefWidth(), Screen.getPrimary().getVisualBounds().getWidth());
+        double prefHeight = Math.min(pane.getPrefHeight(), Screen.getPrimary().getVisualBounds().getHeight());
+
+        primaryStage.setWidth(prefWidth);
+        primaryStage.setHeight(prefHeight);
+        primaryStage.setMaxHeight(1080);
+        primaryStage.setMaxWidth(1920);
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(660);
+
+    }
+
+     // Method to center the stage on the screen
+     private static void centerStageOnScreen(Stage stage) {
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
     }
 
     // Main method to launch the application
