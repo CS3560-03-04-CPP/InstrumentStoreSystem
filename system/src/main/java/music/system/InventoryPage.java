@@ -3,26 +3,38 @@ package music.system;
 import java.io.IOException;
 
 /**
- * InventoryPage: This class represents the inventory page of the music system application.
+ * InventoryPage: This class represents the inventory Stage of the music system application.
  */
 public class InventoryPage {
 
-    public void handleSignOut() throws IOException{App.setRoot("SignInPage");}
-    public void handleClose(){System.exit(0);}
-    public void handleAddInstrument(){}
-    public void handleRemoveInstrument(){}
-    public void handleInstrumentDetails(){}
-    public void handleArchiveInstrument(){}
-    public void handleViewArchive(){}
-    public void handleDeleteArchiveInstrument(){}
-    public void handleNewSaleTransaction(){}
-    public void handleSaleRecords(){}
-    public void handleNewStoreTransaction(){}
-    public void handleStoreRecords(){}
-    public void handleRepairStatus(){}
-    public void handleScheduleRepair(){}
-    public void handleGenerateAnalytics(){}
-    public void handleViewPast(){}
+    public void handle_SignOut() throws IOException{App.setRoot("SignInPage");}
+    public void handle_Close(){System.exit(0);}
+
+
+    /*
+     * Please complete your assigned classes in the files you created, this is
+     * where those methods will be called when a button is pressed in the GUI. 
+     */
+    public void handle_AddInstrument(){}
+    public void handle_RemoveInstrument(){}
+    public void handle_InstrumentDetails(){}
+
+    public void handle_ArchiveInstrument(){}
+    public void handle_ViewArchive(){}
+    public void handle_DeleteArchiveInstrument(){}
+
+    public void handle_NewSaleTransaction(){}
+    public void handle_SaleRecords(){}
+    
+    public void handle_NewStoreTransaction(){}
+    public void handle_StoreRecords(){}
+
+    public void handle_GenerateAnalytics(){}
+    public void handle_ViewPastAnalytics(){}
+
+    public void handle_RepairStatus(){}
+    public void handle_ScheduleRepair(){}
+    
 
 
 

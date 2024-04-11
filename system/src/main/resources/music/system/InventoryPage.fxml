@@ -15,64 +15,64 @@
         <menus>
           <Menu mnemonicParsing="false" text="System">
             <items>
-              <MenuItem mnemonicParsing="false" text="Sign Out" onAction="#handleSignOut"/>
+              <MenuItem mnemonicParsing="false" text="Sign Out" onAction="#handle_SignOut"/>
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" onAction="#handleClose"/>
+              <MenuItem mnemonicParsing="false" text="Close" onAction="#handle_Close"/>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Inventory Managerment">
             <items>
-              <MenuItem mnemonicParsing="false" text="Add Instrument" onAction="#handleAddInstrument"/>
+              <MenuItem mnemonicParsing="false" text="Add Instrument" onAction="#handle_AddInstrument"/>
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Remove Instrument" onAction="#handleRemoveInstrument"/>
+              <MenuItem mnemonicParsing="false" text="Remove Instrument" onAction="#handle_RemoveInstrument"/>
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Edit Instrument Details" onAction="#handleInstrumentDetails"/>
+              <MenuItem mnemonicParsing="false" text="Edit Instrument Details" onAction="#handle_InstrumentDetails"/>
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Archive Instrument" onAction="#handleArchiveInstrument"/>
+              <MenuItem mnemonicParsing="false" text="Archive Instrument" onAction="#handle_ArchiveInstrument"/>
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Arcive">
+          <Menu mnemonicParsing="false" text="Archive">
             <items>
-              <MenuItem mnemonicParsing="false" text="View Arcive" onAction="#handleViewArchive"/>
+              <MenuItem mnemonicParsing="false" text="View Archive" onAction="#handle_ViewArchive"/>
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete Arcived Instrument" onAction="#handleDeleteArchiveInstrument"/>
+              <MenuItem mnemonicParsing="false" text="Delete Archived Instrument" onAction="#handle_DeleteArchiveInstrument"/>
             </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Sale Transactions">
             <items>
-              <MenuItem mnemonicParsing="false" text="New Transaction" onAction="#handleNewSaleTransaction"/>
+              <MenuItem mnemonicParsing="false" text="New Transaction" onAction="#handle_NewSaleTransaction"/>
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Records" onAction="#handleSaleRecords"/>
+              <MenuItem mnemonicParsing="false" text="Records" onAction="#handle_SaleRecords"/>
             </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Store Transactions">
             <items>
-              <MenuItem mnemonicParsing="false" text="New Transaction" onAction="#handleNewStoreTransaction"/>
+              <MenuItem mnemonicParsing="false" text="New Transaction" onAction="#handle_NewStoreTransaction"/>
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Records" onAction="#handleStoreRecords"/>
+              <MenuItem mnemonicParsing="false" text="Records" onAction="#handle_StoreRecords"/>
             </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Repair">
             <items>
-              <MenuItem mnemonicParsing="false" text="Schedule Repair" onAction="#handleScheduleRepair"/>
+              <MenuItem mnemonicParsing="false" text="Schedule Repair" onAction="#handle_ScheduleRepair"/>
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Repair Status" onAction="#handleRepairStatus"/>
+              <MenuItem mnemonicParsing="false" text="Repair Status" onAction="#handle_RepairStatus"/>
             </items>
             </Menu>
            <Menu mnemonicParsing="false" text="Analytics">
             <items>
-              <MenuItem mnemonicParsing="false" text="Generate Analytics" onAction="#handleGenerateAnalytics"/>
+              <MenuItem mnemonicParsing="false" text="Generate Analytics" onAction="#handle_GenerateAnalytics"/>
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="View Past Analytics" onAction="#handleViewPast"/>
+              <MenuItem mnemonicParsing="false" text="View Past Analytics" onAction="#handle_ViewPastAnalytics"/>
             </items>
           </Menu>
           

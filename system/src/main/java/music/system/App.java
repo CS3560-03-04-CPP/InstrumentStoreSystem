@@ -25,6 +25,10 @@ public class App extends Application {
     public void start(@SuppressWarnings("exports") Stage stage) throws IOException {
 
         primaryStage = stage;
+
+        // At any point either the sign in page or the inventory pages will be open,
+        // these are the programs "root" Stages and this integer keeps track of which
+        // page is currently open.
         currentRootPage = 0;
 
         // Loading the SignInPage FXML file and creating a scene
@@ -66,6 +70,7 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
+    // Method to Set size of Signin Window
     public static void setSizeSignIn()
     {
         primaryStage.setMaxHeight(400);
@@ -74,6 +79,8 @@ public class App extends Application {
         primaryStage.setMinWidth(660);
 
     }
+
+    // Method to Set size of Inventory Window
     public static void setSizeInventory(@SuppressWarnings("exports") Pane pane)
     {
         double prefWidth = Math.min(pane.getPrefWidth(), Screen.getPrimary().getVisualBounds().getWidth());

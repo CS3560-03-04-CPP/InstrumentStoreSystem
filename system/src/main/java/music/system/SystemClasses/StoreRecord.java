@@ -2,12 +2,12 @@ package music.system.SystemClasses;
 
 import java.util.Date;
 
-public class PurchaseRecord {
+public class StoreRecord {
     
     private String invoiceNumber; // Unique identifier for the purchase record
     private Date date; // Date of the purchase
 
-    public PurchaseRecord(String invoiceNumber, Date date) {
+    public StoreRecord(String invoiceNumber, Date date) {
         this.invoiceNumber = invoiceNumber;
         this.date = date;
     }
@@ -64,7 +64,7 @@ public class PurchaseRecord {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PurchaseRecord that = (PurchaseRecord) o;
+        StoreRecord that = (StoreRecord) o;
         return invoiceNumber.equals(that.invoiceNumber) && date.equals(that.date);
     }
 
