@@ -3,6 +3,8 @@ package music.system;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -26,25 +28,45 @@ public class SaleRecordScene {
 
         TableColumn<SaleRecord, String> orderIdColumn = new TableColumn<>("Order ID");
         orderIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOrderId()));
-    
+
         TableColumn<SaleRecord, Date> dateColumn = new TableColumn<>("Date");
         dateColumn.setCellValueFactory(cellData -> {
             SimpleObjectProperty<Date> property = new SimpleObjectProperty<>();
             property.setValue(new java.sql.Date(cellData.getValue().getDate().getTime()));
             return property;
         });
-    
+
         TableColumn<SaleRecord, String> buyerNameColumn = new TableColumn<>("Buyer Name");
         buyerNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBuyerName()));
-    
+
         TableColumn<SaleRecord, String> buyerPhoneNumberColumn = new TableColumn<>("Buyer Phone Number");
         buyerPhoneNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBuyerPhoneNumber()));
-    
+
         TableColumn<SaleRecord, Double> soldPriceColumn = new TableColumn<>("Sold Price");
         soldPriceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getSoldPrice()).asObject());
-    
+
         tableView.getColumns().addAll(orderIdColumn, dateColumn, buyerNameColumn, buyerPhoneNumberColumn, soldPriceColumn);
 
+        // TextField for search bar
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search by Phone Number");
+
+        // Add listener to react to user input in the search bar
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterRecords(tableView, newValue);
+        });
+
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(searchField, tableView);
+
+        Scene scene = new Scene(vbox, 600, 400);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        populateSaleRecords(tableView);
+    }
+
+    private static void populateSaleRecords(TableView<SaleRecord> tableView) {
         try {
             // Establish connection to MySQL database
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
@@ -59,6 +81,7 @@ public class SaleRecordScene {
             ResultSet resultSet = statement.executeQuery(query);
 
             // Populate TableView with the results
+            ObservableList<SaleRecord> saleRecords = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 SaleRecord saleRecord = new SaleRecord(
                         resultSet.getString("order_id"),
@@ -67,8 +90,10 @@ public class SaleRecordScene {
                         resultSet.getString("buyer_phone_number"),
                         resultSet.getDouble("sold_price")
                 );
-                tableView.getItems().add(saleRecord);
+                saleRecords.add(saleRecord);
             }
+
+            tableView.setItems(saleRecords);
 
             // Close resources
             System.out.println("Connection closed to the database: Record Scene");
@@ -78,12 +103,16 @@ public class SaleRecordScene {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(tableView);
-
-        Scene scene = new Scene(vbox);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    // Method to filter records based on phone number
+    private static void filterRecords(TableView<SaleRecord> tableView, String phoneNumber) {
+        ObservableList<SaleRecord> filteredData = FXCollections.observableArrayList();
+        for (SaleRecord record : tableView.getItems()) {
+            if (record.getBuyerPhoneNumber().contains(phoneNumber)) {
+                filteredData.add(record);
+            }
+        }
+        tableView.setItems(filteredData);
     }
 }

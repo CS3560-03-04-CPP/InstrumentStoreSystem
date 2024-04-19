@@ -1,6 +1,12 @@
 package music.system;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javafx.fxml.FXML;
 
 import javafx.event.ActionEvent;
@@ -29,23 +35,36 @@ public void userLogin(@SuppressWarnings("exports") ActionEvent event) throws IOE
 
 // Method to validate user login credentials
 private void checkLogin() throws IOException {
-   
-    // Temporary solution until we implement the database
-    if(username.getText().toString().toLowerCase().equals("manager") && password.getText().toString().toLowerCase().equals("manager")
-    || username.getText().toString().toLowerCase().equals("employee") && password.getText().toString().toLowerCase().equals("employee")) {
-        wrongLogin.setText("Success!");       
-        
-        
-        App.setRoot("InventoryPage");
-    }
+    // JDBC URL, username, and password of MySQL server
+    String url = "jdbc:mysql://localhost:3306/Instrument_Store_System";
+    String dbUsername = "username";
+    String dbPassword = "password";
 
-    else if(username.getText().isEmpty() && password.getText().isEmpty()) {
-        wrongLogin.setText("Please enter your data.");
-    }
+    // SQL query to check if username and password match
+    String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+    
+    try (Connection connection = DriverManager.getConnection(url, dbUsername, dbPassword);
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
+        // Set parameters for the query
+        preparedStatement.setString(1, username.getText().toLowerCase());
+        preparedStatement.setString(2, password.getText().toLowerCase());
 
-    else {
-        wrongLogin.setText("Wrong username or password!");
+        // Execute the query
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        // Check if any rows were returned
+        if (resultSet.next()) {
+            // If a row was returned, login is successful
+            wrongLogin.setText("Success!");
+            App.setRoot("InventoryPage");
+        } else {
+            // If no rows were returned, login failed
+            wrongLogin.setText("Wrong username or password!");
+        }
+    } catch (SQLException e) {
+        // Handle any SQL exceptions
+        e.printStackTrace();
     }
 }
 
