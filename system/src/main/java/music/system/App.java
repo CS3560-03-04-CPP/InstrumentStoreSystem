@@ -10,6 +10,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * JavaFX App: This Handles the initialization of javaFX and the properties of the windows created through-out the system. 
@@ -104,6 +107,29 @@ public class App extends Application {
 
     // Main method to launch the application
     public static void main(String[] args) {
-        launch();
+
+        // JDBC URL, username, and password
+        String url = "jdbc:mysql://localhost:3306/Instrument_Store_System";
+        String user = "username";
+        String password = "password";
+
+        try {
+            // Connect to the database
+            Connection connection = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected to the database!");
+
+            // Launch the Application
+            launch();
+            
+            // Close the connection when done
+            System.out.println("Connection closed to the database: App");
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("Failed to connect to the database.");
+            e.printStackTrace();
+        }
+
+       
     }
+
 }

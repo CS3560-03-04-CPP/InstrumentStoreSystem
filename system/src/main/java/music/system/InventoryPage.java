@@ -24,7 +24,7 @@ public class InventoryPage {
     public void handle_DeleteArchiveInstrument(){}
 
     public void handle_NewSaleTransaction(){}
-    public void handle_SaleRecords(){}
+    public void handle_SaleRecords(){SaleRecordScene.displaySaleRecords();}
     
     public void handle_NewStoreTransaction(){}
     public void handle_StoreRecords(){}
