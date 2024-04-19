@@ -141,63 +141,6 @@ public class InventoryAnalyticsScene {
         return pieChart;
     }
 
-    /*private static void populateInventoryAnalytics(TableView<InventoryAnalytics> tableView) {
-        try {
-            // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
-    
-            // Define SQL query to select the latest record from the database
-            String query = "SELECT * FROM inventory_analytics ORDER BY time DESC LIMIT 1";
-    
-            // Create a Statement
-            Statement statement = connection.createStatement();
-    
-            // Execute the query and get the ResultSet
-            ResultSet resultSet = statement.executeQuery(query);
-    
-            // Populate TableView with the latest result
-            ObservableList<InventoryAnalytics> analyticsList = FXCollections.observableArrayList();
-            if (resultSet.next()) {
-                // Construct InventoryAnalytics object and add it to the list
-                InventoryAnalytics analytics = new InventoryAnalytics(
-                        resultSet.getDate("time"),
-                        resultSet.getInt("item_stock_count"),
-                        resultSet.getDouble("sales_revenue"),
-                        resultSet.getInt("repairs_performed_count"),
-                        resultSet.getDouble("average_age_of_inventory"),
-                        resultSet.getDouble("total_inventory_value")
-                );
-                analyticsList.add(analytics);
-            }
-    
-            // Set the items in TableView
-            tableView.setItems(analyticsList);
-    
-            // Set fixed cell size to prevent extra empty rows
-            tableView.setFixedCellSize(25);
-    
-            // Set placeholder to null to prevent the empty row
-            tableView.setPlaceholder(null);
-
-            // Set preferred height to fit only one row
-            tableView.setPrefHeight(tableView.getFixedCellSize() + 2);
-    
-            // Close resources
-            System.out.println("Connection closed to the database: InventoryAnalytics Scene");
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    // Method to filter records based on time
-    @SuppressWarnings("unused")
-    private static void filterRecords(TableView<InventoryAnalytics> tableView, String time) {
-        // Implement filtering logic here
-    }
-
     // Method to get current time in a formatted string
     private static String getCurrentTime() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
