@@ -27,7 +27,7 @@ public class InventoryPage {
     public void handle_SaleRecords(){SaleRecordScene.displaySaleRecords();}
     
     public void handle_NewStoreTransaction(){}
-    public void handle_StoreRecords(){}
+    public void handle_StoreRecords(){StoreRecordScene.displayStoreRecords();}
 
     public void handle_GenerateAnalytics(){InventoryAnalyticsScene.displayInventoryAnalytics();}
     public void handle_ViewPastAnalytics(){ViewPastAnalyticsScene.displayPastAnalytics();}
