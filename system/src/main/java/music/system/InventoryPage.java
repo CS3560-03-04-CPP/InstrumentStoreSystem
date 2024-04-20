@@ -2,6 +2,8 @@ package music.system;
 
 import java.io.IOException;
 
+import music.system.SystemClasses.archiveClass;
+
 /**
  * InventoryPage: This class represents the inventory Stage of the music system application.
  */
@@ -20,7 +22,7 @@ public class InventoryPage {
     public void handle_InstrumentDetails(){}
 
     public void handle_ArchiveInstrument(){}
-    public void handle_ViewArchive(){}
+    public void handle_ViewArchive(){ArchiveScene.displayArchive();}
     public void handle_DeleteArchiveInstrument(){}
 
     public void handle_NewSaleTransaction(){}

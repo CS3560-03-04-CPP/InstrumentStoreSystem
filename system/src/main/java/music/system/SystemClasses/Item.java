@@ -80,7 +80,7 @@ public class Item {
         return dateManufactured;
     }
 
-    public void setdateManufactured() {
+    public void setdateManufactured(String dateManufactured) {
         this.dateManufactured = dateManufactured;
     }
 
