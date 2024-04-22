@@ -1,4 +1,5 @@
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\module-info.java
+C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\InventoryManagementScene.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\SaleRecordScene.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\SystemClasses\Item.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\SystemClasses\InventoryAnalytics.java
@@ -9,8 +10,12 @@ C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\RepairItemScene.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\SignInPage.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\InventoryPage.java
+C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\StoreRecordScene.java
+C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\ArchiveScene.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\SystemClasses\Employee.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\ViewPastAnalyticsScene.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\SystemClasses\StoreRecord.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\SystemClasses\RepairItem.java
 C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\App.java
+C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\SystemClasses\SaleTransaction.java
+C:\Users\rickm\OneDrive\Documents\NetBeansProjects\InstrumentStoreSystem\system\src\main\java\music\system\SystemClasses\StoreTransaction.java
