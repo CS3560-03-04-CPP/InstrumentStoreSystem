@@ -107,7 +107,7 @@ public class App extends Application {
 
     // Main method to launch the application
     public static void main(String[] args) {
-
+        
         // JDBC URL, username, and password
         String url = "jdbc:mysql://localhost:3306/Instrument_Store_System";
         String user = "username";
@@ -118,17 +118,17 @@ public class App extends Application {
             Connection connection = DriverManager.getConnection(url, user, password);
             System.out.println("Connected to the database!");
 
+            // Close the connection.
+            System.out.println("Connection to database Validated.");
+            connection.close();
+
             // Launch the Application
             launch();
-            
-            // Close the connection when done
-            System.out.println("Connection closed to the database: App");
-            connection.close();
+
         } catch (SQLException e) {
-            System.out.println("Failed to connect to the database.");
+            System.out.println("Failed to connect to the database.\n Please download and setup the MySql Server.");
             e.printStackTrace();
         }
-
        
     }
 

@@ -18,6 +18,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class ViewPastAnalyticsScene {
@@ -124,7 +125,7 @@ public class ViewPastAnalyticsScene {
             while (resultSet.next()) {
                 // Construct InventoryAnalytics object and add it to the list
                 InventoryAnalytics analytics = new InventoryAnalytics(
-                        resultSet.getDate("time"),
+                        resultSet.getTimestamp("time"),
                         resultSet.getInt("item_stock_count"),
                         resultSet.getDouble("sales_revenue"),
                         resultSet.getInt("repairs_performed_count"),
@@ -158,8 +159,13 @@ public class ViewPastAnalyticsScene {
             // Create a PreparedStatement
             PreparedStatement preparedStatement = connection.prepareStatement(query);
     
+            // Convert Java Date to SQL Timestamp
+            Timestamp timestamp = new Timestamp(selectedAnalytics.getTime().getTime());
+            System.out.println(timestamp);
+            System.out.println("selectedAnalytics timestamp: " + selectedAnalytics.getTime());
+            System.out.println("Converted timestamp: " + timestamp);
             // Set parameters for the PreparedStatement
-            preparedStatement.setDate(1, new java.sql.Date(selectedAnalytics.getTime().getTime()));
+            preparedStatement.setTimestamp(1, timestamp);
     
             // Execute the deletion
             int rowsAffected = preparedStatement.executeUpdate();

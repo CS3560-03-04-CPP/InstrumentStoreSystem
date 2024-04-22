@@ -9,6 +9,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="music.system.InventoryPage">
    <children>
+       
       <Accordion layoutX="183.0" layoutY="94.0" />
       <MenuBar layoutY="2.0" prefHeight="13.0" prefWidth="1920.0">
 
@@ -23,26 +24,12 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Inventory Managerment">
             <items>
-              <MenuItem mnemonicParsing="false" text="Add Instrument" onAction="#handle_AddInstrument"/>
-            </items>
-            <items>
-              <MenuItem mnemonicParsing="false" text="Remove Instrument" onAction="#handle_RemoveInstrument"/>
-            </items>
-            <items>
-              <MenuItem mnemonicParsing="false" text="Edit Instrument Details" onAction="#handle_InstrumentDetails"/>
-            </items>
-            <items>
-              <MenuItem mnemonicParsing="false" text="Archive Instrument" onAction="#handle_ArchiveInstrument"/>
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Archive">
+              <MenuItem mnemonicParsing="false" text="View Instruments" onAction="#handle_ViewInstrument"/>
+            </items>                                  
             <items>
               <MenuItem mnemonicParsing="false" text="View Archive" onAction="#handle_ViewArchive"/>
             </items>
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete Archived Instrument" onAction="#handle_DeleteArchiveInstrument"/>
-            </items>
-            </Menu>
+          </Menu>
             <Menu mnemonicParsing="false" text="Sale Transactions">
             <items>
               <MenuItem mnemonicParsing="false" text="New Transaction" onAction="#handle_NewSaleTransaction"/>

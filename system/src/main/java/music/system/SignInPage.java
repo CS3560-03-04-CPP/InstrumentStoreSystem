@@ -20,6 +20,8 @@ import javafx.scene.text.Text;
  */
 public class SignInPage {
 
+public static int currentUserID;
+
 @FXML
 private Button button;
 @FXML
@@ -31,6 +33,10 @@ private PasswordField password;
 
 public void userLogin(@SuppressWarnings("exports") ActionEvent event) throws IOException {
     checkLogin();
+}
+
+public void setCurrentUser(int userID){
+    currentUserID = userID;
 }
 
 // Method to validate user login credentials
@@ -56,6 +62,8 @@ private void checkLogin() throws IOException {
         // Check if any rows were returned
         if (resultSet.next()) {
             // If a row was returned, login is successful
+            int userID = resultSet.getInt("employeeID");
+            setCurrentUser(userID); // Set the current user id
             wrongLogin.setText("Success!");
             App.setRoot("InventoryPage");
         } else {
@@ -67,6 +75,5 @@ private void checkLogin() throws IOException {
         e.printStackTrace();
     }
 }
-
 
 }

@@ -3,8 +3,11 @@ package music.system.SystemClasses;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Random;
+
+import music.system.SignInPage;
 
 public class InventoryAnalytics {
 
@@ -14,6 +17,8 @@ public class InventoryAnalytics {
     private int repairsPerformedCount;
     private double averageAgeOfInventory;
     private double totalInventoryValue;
+
+    public static Timestamp currentTime;
 
     public InventoryAnalytics(Date time, int itemStockCount, double salesRevenue, int repairsPerformedCount,
                               double averageAgeOfInventory, double totalInventoryValue) {
@@ -32,17 +37,18 @@ public class InventoryAnalytics {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
 
             // Define SQL query to insert inventory analytics data into the database
-            String query = "INSERT INTO inventory_analytics (time, item_stock_count, sales_revenue, repairs_performed_count, average_age_of_inventory, total_inventory_value) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
-
+            String query = "INSERT INTO inventory_analytics (time, item_stock_count, sales_revenue, repairs_performed_count, average_age_of_inventory, total_inventory_value, users_employeeID) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            System.out.println("somthing is happening ;/"+ new java.sql.Timestamp(System.currentTimeMillis()));
             // Create PreparedStatement
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setDate(1, new java.sql.Date(time.getTime()));
+            preparedStatement.setTimestamp(1, currentTime);
             preparedStatement.setInt(2, itemStockCount);
             preparedStatement.setDouble(3, salesRevenue);
             preparedStatement.setInt(4, repairsPerformedCount);
             preparedStatement.setDouble(5, averageAgeOfInventory);
             preparedStatement.setDouble(6, totalInventoryValue);
+            preparedStatement.setInt(7, SignInPage.currentUserID);
 
             // Execute the insert query
             preparedStatement.executeUpdate();
@@ -65,7 +71,7 @@ public class InventoryAnalytics {
     double totalInventoryValue = random.nextDouble() * 50; 
 
     // Create an instance of InventoryAnalytics with the generated random values
-    Date currentTime = new Date(); // Current time
+    currentTime = new java.sql.Timestamp(System.currentTimeMillis()); // Current time
     InventoryAnalytics newAnalytics = new InventoryAnalytics(currentTime, itemStockCount, salesRevenue, repairsPerformedCount, averageAgeOfInventory, totalInventoryValue);
 
     return newAnalytics;

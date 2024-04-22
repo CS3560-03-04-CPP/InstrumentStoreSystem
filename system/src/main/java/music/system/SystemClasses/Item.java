@@ -3,6 +3,7 @@ package music.system.SystemClasses;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javafx.beans.property.DoubleProperty;
@@ -43,6 +44,40 @@ public class Item {
 
     }
 
+        // Method to save inventory analytics data to the database
+        public void saveToDatabase(double itemStockCount, double salesRevenue, int repairsPerformedCount,
+        double averageAgeOfInventory, double totalInventoryValue, int currentUserID) {
+            try {
+                // Establish connection to the database
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+    
+                // Define SQL query to insert item data into the item table
+                String query = "INSERT INTO item (itemID, name, category, brand, dateManufactured, serialNumber, manufacturerPrice, retailPrice, description) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+                // Create PreparedStatement
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setInt(1, this.itemID);
+                preparedStatement.setString(2, this.name);
+                preparedStatement.setString(3, this.category);
+                preparedStatement.setString(4, this.brand);
+                preparedStatement.setString(5, this.dateManufactured);
+                preparedStatement.setInt(6, this.serialNumber);
+                preparedStatement.setDouble(7, this.manufacturerPrice);
+                preparedStatement.setDouble(8, this.retailPrice);
+                preparedStatement.setString(9, this.description);
+    
+                // Execute the insert query
+                preparedStatement.executeUpdate();
+    
+                // Close resources
+                preparedStatement.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+
     // Getters and Setters
     public int getitemID() {
         return itemID;
@@ -80,8 +115,8 @@ public class Item {
         return dateManufactured;
     }
 
-    public void setdateManufactured(String dateManufactured) {
-        this.dateManufactured = dateManufactured;
+    public void setdateManufactured(String dateManufactured2) {
+        this.dateManufactured = dateManufactured2;
     }
 
     public int getserialNumber() {
