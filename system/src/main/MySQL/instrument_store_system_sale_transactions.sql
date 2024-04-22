@@ -16,27 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `store_records`
+-- Table structure for table `sale_transactions`
 --
 
-DROP TABLE IF EXISTS `store_records`;
+DROP TABLE IF EXISTS `sale_transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `store_records` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `invoice_number` varchar(100) DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `sale_transactions` (
+  `transaction_id` int NOT NULL AUTO_INCREMENT,
+  `buyer_name` varchar(100) DEFAULT NULL,
+  `card_number` varchar(16) DEFAULT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `CVV` varchar(4) DEFAULT NULL,
+  `billing_address` varchar(255) DEFAULT NULL,
+  `billing_postal_code` varchar(10) DEFAULT NULL,
+  `transaction_amount` decimal(10,2) DEFAULT NULL,
+  `item_itemID` int NOT NULL,
+  PRIMARY KEY (`transaction_id`,`item_itemID`),
+  KEY `fk_sale_transactions_item1_idx` (`item_itemID`),
+  CONSTRAINT `fk_sale_transactions_item1` FOREIGN KEY (`item_itemID`) REFERENCES `item` (`itemID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `store_records`
+-- Dumping data for table `sale_transactions`
 --
 
-LOCK TABLES `store_records` WRITE;
-/*!40000 ALTER TABLE `store_records` DISABLE KEYS */;
-/*!40000 ALTER TABLE `store_records` ENABLE KEYS */;
+LOCK TABLES `sale_transactions` WRITE;
+/*!40000 ALTER TABLE `sale_transactions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sale_transactions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -48,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-21 21:59:31
+-- Dump completed on 2024-04-21 21:59:32

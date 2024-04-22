@@ -25,7 +25,10 @@ DROP TABLE IF EXISTS `item_photo`;
 CREATE TABLE `item_photo` (
   `id` int NOT NULL AUTO_INCREMENT,
   `image_data` blob,
-  PRIMARY KEY (`id`)
+  `item_itemID` int NOT NULL,
+  PRIMARY KEY (`id`,`item_itemID`),
+  KEY `fk_item_photo_item1_idx` (`item_itemID`),
+  CONSTRAINT `fk_item_photo_item1` FOREIGN KEY (`item_itemID`) REFERENCES `item` (`itemID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -47,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-19 23:08:35
+-- Dump completed on 2024-04-21 21:59:32

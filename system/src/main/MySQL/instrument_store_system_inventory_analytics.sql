@@ -23,12 +23,16 @@ DROP TABLE IF EXISTS `inventory_analytics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `inventory_analytics` (
-  `time` datetime DEFAULT NULL,
+  `time` datetime NOT NULL,
   `item_stock_count` int DEFAULT NULL,
   `sales_revenue` double DEFAULT NULL,
   `repairs_performed_count` int DEFAULT NULL,
   `average_age_of_inventory` double DEFAULT NULL,
-  `total_inventory_value` double DEFAULT NULL
+  `total_inventory_value` double DEFAULT NULL,
+  `users_employeeID` varchar(45) NOT NULL,
+  PRIMARY KEY (`time`,`users_employeeID`),
+  KEY `fk_inventory_analytics_users1_idx` (`users_employeeID`),
+  CONSTRAINT `fk_inventory_analytics_users1` FOREIGN KEY (`users_employeeID`) REFERENCES `users` (`employeeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -38,7 +42,7 @@ CREATE TABLE `inventory_analytics` (
 
 LOCK TABLES `inventory_analytics` WRITE;
 /*!40000 ALTER TABLE `inventory_analytics` DISABLE KEYS */;
-INSERT INTO `inventory_analytics` VALUES ('2024-04-20 08:30:00',100,5000,10,2.5,10000),('2024-04-21 09:45:00',150,7000,15,3,15000),('2024-04-22 10:15:00',200,9000,20,3.5,20000),('2024-04-19 00:00:00',0,70.93224237837275,6,55.3519174473183,37.794755627165884);
+INSERT INTO `inventory_analytics` VALUES ('2024-04-20 17:32:48',8,44.34180627992536,3,92.21251875927004,42.508819335798286,'0'),('2024-04-20 17:32:50',1,94.90446430345042,2,40.35529588162867,11.231385300484465,'0');
 /*!40000 ALTER TABLE `inventory_analytics` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-19 23:08:35
+-- Dump completed on 2024-04-21 21:59:32

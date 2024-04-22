@@ -33,7 +33,7 @@ CREATE TABLE `archive` (
   `retailPrice` decimal(10,2) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`itemID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `archive` (
 
 LOCK TABLES `archive` WRITE;
 /*!40000 ALTER TABLE `archive` DISABLE KEYS */;
-INSERT INTO `archive` VALUES (1,'Item 1','Electronics','Brand X','2023-01-15',123456,99.99,149.99,'This is item 1 description.'),(2,'Item 2','Clothing','Brand Y','2023-03-20',789012,49.99,79.99,'This is item 2 description.'),(3,'Item 3','Home & Garden','Brand Z','2023-05-10',345678,199.99,249.99,'This is item 3 description.');
+INSERT INTO `archive` VALUES (5,'Drums','Percussion','Pearl','2023-02-05',222222,1200.00,1700.00,'Acoustic drums by Pearl'),(12,'Bass','String','Yamaha','2023-04-10',999999,700.00,1200.00,'Electric bass by Yamaha'),(16,'Trombone','Brass','Yamaha','2023-06-01',101010,700.00,1200.00,'Trombone by Yamaha'),(26,'Organ','Keyboard','Gibson','2023-09-05',202020,1800.00,2800.00,'Electric organ by Gibson');
 /*!40000 ALTER TABLE `archive` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-19 23:08:36
+-- Dump completed on 2024-04-21 21:59:32

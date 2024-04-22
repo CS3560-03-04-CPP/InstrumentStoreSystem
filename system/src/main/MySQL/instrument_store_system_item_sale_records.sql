@@ -23,12 +23,13 @@ DROP TABLE IF EXISTS `item_sale_records`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `item_sale_records` (
-  `itemID` int NOT NULL,
   `sale_records_id` int NOT NULL,
-  PRIMARY KEY (`itemID`,`sale_records_id`),
+  `sale_transactions_transaction_id` int NOT NULL,
+  PRIMARY KEY (`sale_records_id`,`sale_transactions_transaction_id`),
   KEY `fk_item_sale_records1_idx` (`sale_records_id`),
+  KEY `fk_item_sale_records_sale_transactions1_idx` (`sale_transactions_transaction_id`),
   CONSTRAINT `fk_item_sale_records1` FOREIGN KEY (`sale_records_id`) REFERENCES `sale_records` (`id`),
-  CONSTRAINT `fk_item_sale_records_item` FOREIGN KEY (`itemID`) REFERENCES `item` (`itemID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_item_sale_records_sale_transactions1` FOREIGN KEY (`sale_transactions_transaction_id`) REFERENCES `sale_transactions` (`transaction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-19 23:08:35
+-- Dump completed on 2024-04-21 21:59:31

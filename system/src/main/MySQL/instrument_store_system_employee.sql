@@ -23,10 +23,12 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
-  `employeeID` int NOT NULL,
-  `name` varchar(45) DEFAULT NULL,
+  `name` varchar(45) NOT NULL,
   `position` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`employeeID`)
+  `users_employeeID` varchar(45) NOT NULL,
+  PRIMARY KEY (`name`,`users_employeeID`),
+  KEY `fk_employee_users1_idx` (`users_employeeID`),
+  CONSTRAINT `fk_employee_users1` FOREIGN KEY (`users_employeeID`) REFERENCES `users` (`employeeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,6 +38,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+INSERT INTO `employee` VALUES ('Joe','manager','0'),('Mike','employee','1');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-19 23:08:35
+-- Dump completed on 2024-04-21 21:59:31

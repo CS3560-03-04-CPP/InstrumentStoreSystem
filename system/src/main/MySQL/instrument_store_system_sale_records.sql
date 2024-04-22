@@ -24,7 +24,6 @@ DROP TABLE IF EXISTS `sale_records`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sale_records` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `order_id` varchar(100) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `buyer_name` varchar(100) DEFAULT NULL,
   `buyer_phone_number` varchar(20) DEFAULT NULL,
@@ -39,7 +38,6 @@ CREATE TABLE `sale_records` (
 
 LOCK TABLES `sale_records` WRITE;
 /*!40000 ALTER TABLE `sale_records` DISABLE KEYS */;
-INSERT INTO `sale_records` VALUES (1,'TRUMPET001','2024-04-18','John Doe','1234567890',500),(2,'PIANO001','2024-04-18','Jane Smith','0987654321',2000),(3,'GUITAR001','2024-04-18','Bob Johnson','5551234567',700);
 /*!40000 ALTER TABLE `sale_records` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-19 23:08:36
+-- Dump completed on 2024-04-21 21:59:31
