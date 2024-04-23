@@ -1,5 +1,6 @@
 package music.system;
 
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,49 +18,22 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class RepairItemScene {
+public class ScheduleRepairScene {
     
     @SuppressWarnings("unchecked")
-    public static void displayRepairs() {
+    public static void displayScheduleRepair() {
        Stage primaryStage = new Stage();
        primaryStage.setTitle("Current Repairs");
 
        TableView<RepairItem> tableView = new TableView<>();
 
-       TableColumn<RepairItem, String> nameColumn = new TableColumn<>("Name");
-       nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-       nameColumn.setPrefWidth(200);
-        
-       TableColumn<RepairItem, String> descriptionColumn = new TableColumn<>("Description");
-       descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
-       descriptionColumn.setPrefWidth(350);
-       
-       TableColumn<RepairItem, Double> fixPriceColumn = new TableColumn<>("Fix Price");
-       fixPriceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
-       
-       tableView.getColumns().addAll(nameColumn, descriptionColumn, fixPriceColumn);
-       
-       // TextField for search bar
-       TextField searchField = new TextField();
-       searchField.setPromptText("Search by Name");
-       
-       // Add listener to react to user input in the search bar
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterRecords(tableView, newValue);
-        });
-        
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(searchField, tableView);
-
-        Scene scene = new Scene(vbox, 600, 400);
-        primaryStage.setScene(scene);
         primaryStage.show();
 
-        populateRepairItems(tableView);
+        populateSqeduleRepair(tableView);
         
     }
     
-    private static void populateRepairItems(TableView<RepairItem> tableView) {
+    private static void populateSqeduleRepair(TableView<RepairItem> tableView) {
         try {
             // Establish connection to MySQL database
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
@@ -97,14 +71,4 @@ public class RepairItemScene {
         }
     }
     
-    // Method to filter records
-    private static void filterRecords(TableView<RepairItem> tableView, String name) {
-        ObservableList<RepairItem> filteredData = FXCollections.observableArrayList();
-        for (RepairItem record : tableView.getItems()) {
-            if (record.getName().contains(name)) {
-                filteredData.add(record);
-            }
-        }
-        tableView.setItems(filteredData);
-    }
 }

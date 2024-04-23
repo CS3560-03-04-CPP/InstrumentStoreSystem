@@ -37,8 +37,9 @@ public class InventoryPage {
     public void handle_GenerateAnalytics(){InventoryAnalyticsScene.displayInventoryAnalytics();}
     public void handle_ViewPastAnalytics(){ViewPastAnalyticsScene.displayPastAnalytics();}
 
+    public void handle_ScheduleRepair(){ScheduleRepairScene.displayScheduleRepair();}
     public void handle_RepairStatus(){RepairItemScene.displayRepairs();}
-    public void handle_ScheduleRepair(){}
+    
     
     /*public VBox createInventoryPage() {
         TableView<InventoryRecord> tableView = new TableView<>();

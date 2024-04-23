@@ -336,8 +336,8 @@ public class InventoryManagementScene {
             });
 
             // Close button
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(event -> {
+            Button closeButton = new Button("Close");
+            closeButton.setOnAction(event -> {
             primaryStage.close(); // Close the application
         });
 
