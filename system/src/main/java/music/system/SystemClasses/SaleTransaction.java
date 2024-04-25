@@ -30,6 +30,10 @@ public class SaleTransaction {
         this.soldPriceProperty = new SimpleDoubleProperty(soldPrice);
     }
 
+    public SaleTransaction(String string, double double1, String string2) {
+        //TODO Auto-generated constructor stub
+    }
+
     // Save to MySQL method
     public void saveToMySQL() {
         try {
