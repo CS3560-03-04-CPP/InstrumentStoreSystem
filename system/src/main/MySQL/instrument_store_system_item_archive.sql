@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `instrument_store_system` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `instrument_store_system`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: instrument_store_system
@@ -28,7 +30,7 @@ CREATE TABLE `item_archive` (
   PRIMARY KEY (`itemID`,`archive_itemID`),
   KEY `fk_item_archive1_idx` (`archive_itemID`),
   CONSTRAINT `fk_item_archive1` FOREIGN KEY (`archive_itemID`) REFERENCES `archive` (`itemID`),
-  CONSTRAINT `fk_item_archive_item` FOREIGN KEY (`itemID`) REFERENCES `item` (`itemID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_item_archive_item` FOREIGN KEY (`itemID`) REFERENCES `item` (`itemID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -38,6 +40,7 @@ CREATE TABLE `item_archive` (
 
 LOCK TABLES `item_archive` WRITE;
 /*!40000 ALTER TABLE `item_archive` DISABLE KEYS */;
+INSERT INTO `item_archive` VALUES (17,111128),(9,666675);
 /*!40000 ALTER TABLE `item_archive` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-21 21:59:31
+-- Dump completed on 2024-04-28  0:32:03

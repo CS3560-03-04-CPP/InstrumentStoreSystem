@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `instrument_store_system` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `instrument_store_system`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: instrument_store_system
@@ -33,7 +35,7 @@ CREATE TABLE `archive` (
   `retailPrice` decimal(10,2) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`itemID`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=987658 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +44,7 @@ CREATE TABLE `archive` (
 
 LOCK TABLES `archive` WRITE;
 /*!40000 ALTER TABLE `archive` DISABLE KEYS */;
-INSERT INTO `archive` VALUES (5,'Drums','Percussion','Pearl','2023-02-05',222222,1200.00,1700.00,'Acoustic drums by Pearl'),(12,'Bass','String','Yamaha','2023-04-10',999999,700.00,1200.00,'Electric bass by Yamaha'),(16,'Trombone','Brass','Yamaha','2023-06-01',101010,700.00,1200.00,'Trombone by Yamaha'),(26,'Organ','Keyboard','Gibson','2023-09-05',202020,1800.00,2800.00,'Electric organ by Gibson');
+INSERT INTO `archive` VALUES (111128,'Trombone','Brass','Bach','2023-06-05',111111,800.00,1300.00,'Trombone by Bach'),(666675,'Guitar','String','Yamaha','2023-03-10',666666,900.00,1500.00,'Acoustic/electric guitar by Yamaha');
 /*!40000 ALTER TABLE `archive` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-21 21:59:32
+-- Dump completed on 2024-04-28  0:32:03

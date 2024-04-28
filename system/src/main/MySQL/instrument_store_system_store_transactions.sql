@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `instrument_store_system` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `instrument_store_system`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: instrument_store_system
@@ -33,7 +35,7 @@ CREATE TABLE `store_transactions` (
   PRIMARY KEY (`transaction_id`,`item_itemID`),
   KEY `fk_store_transactions_item1_idx` (`item_itemID`),
   CONSTRAINT `fk_store_transactions_item1` FOREIGN KEY (`item_itemID`) REFERENCES `item` (`itemID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2061355450 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-21 21:59:32
+-- Dump completed on 2024-04-28  0:32:02
