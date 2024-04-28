@@ -1,22 +1,20 @@
 package music.system;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.SaleRecord;
-
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 public class SaleRecordScene {
 
@@ -66,7 +64,7 @@ public class SaleRecordScene {
     private static void populateSaleRecords(TableView<SaleRecord> tableView) {
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
 
             // Define SQL query to select all records from the database
             String query = "SELECT * FROM sale_records";
@@ -90,13 +88,13 @@ public class SaleRecordScene {
                 saleRecords.add(saleRecord);
             }
 
+            // Set the items in TableView
             tableView.setItems(saleRecords);
 
             // Close resources
-            System.out.println("Connection closed to the database: Record Scene");
             resultSet.close();
             statement.close();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

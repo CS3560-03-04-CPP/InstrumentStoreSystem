@@ -1,11 +1,11 @@
 package music.system.SystemClasses;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Date;
+
+import music.system.DatabaseManager;
 
 public class StoreTransaction {
 
@@ -31,7 +31,7 @@ public class StoreTransaction {
     public void saveToMySQL() {
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
     
             String query = "SELECT MAX(itemID) AS last_item_id FROM item";
 
@@ -59,12 +59,12 @@ public class StoreTransaction {
             preparedStatement.setDouble(6, unitPrice);
             preparedStatement.setInt(7, itemID);
 
+            // Execute the insert query
             preparedStatement.executeUpdate();
     
             // Close resources
-            System.out.println("Connection closed to the database: StoreTransaction");
             preparedStatement.close();
-            connection.close();
+
     
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,18 +1,17 @@
 package music.system.SystemClasses;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import javafx.scene.image.Image;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+
+import javafx.scene.image.Image;
+import music.system.DatabaseManager;
 
 public class ItemPhoto {
 	private Image image;
@@ -33,19 +32,24 @@ public class ItemPhoto {
         
         public void saveToMySQL() {
             try {
-                //Establish connection to MySQL database
-                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+                // Establish connection to MySQL database
+                Connection connection = DatabaseManager.getConnection();
                 
-                //Define SQL query to insert ItemPhoto data into the database
+                // Define SQL query to insert ItemPhoto data into the database
                 String query = "INSERT INTO item_photos (image) VALUES (?)";
                 
                 // Create PreparedStatement
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 byte[] imageData = imageToByteArray(image);
-                //set the byte array as a parameter for the PreparedStatement
+
+                // set the byte array as a parameter for the PreparedStatement
                 preparedStatement.setBytes(1, imageData);
-                //Execute the query
+
+                // Execute the query
                 preparedStatement.executeUpdate();
+
+                // Close resources
+                preparedStatement.close();
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -65,12 +69,6 @@ public class ItemPhoto {
                 Files.deleteIfExists(tempFile);
             }
         }
-
-	//generate an ID for ItemPhoto
-	//return the ID for ItemPhoto
-	private int generatePhotoId() {	
-		return 0;
-	}
         
         /*
 	//get photoId

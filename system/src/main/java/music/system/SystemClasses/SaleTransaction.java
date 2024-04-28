@@ -1,19 +1,18 @@
 package music.system.SystemClasses;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import music.system.DatabaseManager;
 
 public class SaleTransaction {
 
@@ -46,7 +45,7 @@ public class SaleTransaction {
     public void saveToMySQL() {
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/instrument_store_system", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
 
             // Define SQL query to insert sale record data into the database
             String query = "INSERT INTO sale_transactions (transaction_id, buyer_name, card_number, expiration_date, CVV, billing_address, billing_postal_code, transaction_amount, item_itemID) " +
@@ -68,9 +67,8 @@ public class SaleTransaction {
             preparedStatement.executeUpdate();
 
             // Close resources
-            System.out.println("Connection closed to the database: SaleTransaction");
             preparedStatement.close();
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

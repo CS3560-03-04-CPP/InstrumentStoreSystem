@@ -1,9 +1,10 @@
 package music.system.SystemClasses;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import music.system.DatabaseManager;
 
 public class archiveItem {
 
@@ -17,7 +18,8 @@ public class archiveItem {
     }
 
     public void saveToDatabase() {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password")) {
+        try {
+            Connection connection = DatabaseManager.getConnection();
             // Define the columns explicitly, excluding the first key attribute.
             // Update query for main archive table.
             String insertQuery = "INSERT INTO archive (itemID, name, category, brand, dateManufactured, serialNumber, manufacturerPrice, retailPrice, description) " +
@@ -25,11 +27,13 @@ public class archiveItem {
             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setInt(1, archiveID);
             preparedStatement.setInt(2, selectedItem.getitemID());
+
+            // Execute the insert query
             preparedStatement.executeUpdate();
             
-            
+            // Close resources
             preparedStatement.close();
-            connection.close();
+
             System.out.println("Data saved successfully!");
         } catch (SQLException e) {
             System.err.println("SQLException occurred:");
@@ -39,16 +43,21 @@ public class archiveItem {
             e.printStackTrace();
         }
 
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password")) {
+        try {
+            Connection connection = DatabaseManager.getConnection();
             // Update query for the linked table.
             String insertItemArchiveQuery = "INSERT INTO item_archive (itemID, archive_itemID) VALUES (?, ?)";
             PreparedStatement itemArchiveStatement = connection.prepareStatement(insertItemArchiveQuery);
             itemArchiveStatement.setInt(1, selectedItem.getitemID());
             itemArchiveStatement.setInt(2, archiveID);
+
+            // Execute the insert query
             itemArchiveStatement.executeUpdate();
+
+            // Close resources
             itemArchiveStatement.close();
             
-            connection.close();
+
             System.out.println("Data saved successfully!");
         } catch (SQLException e) {
             System.err.println("SQLException occurred:");

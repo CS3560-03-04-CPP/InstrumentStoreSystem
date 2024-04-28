@@ -1,5 +1,9 @@
 package music.system;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -8,11 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  * JavaFX App: This Handles the initialization of javaFX and the properties of the windows created through-out the system. 
@@ -108,19 +107,14 @@ public class App extends Application {
     // Main method to launch the application
     public static void main(String[] args) {
         
-        // JDBC URL, username, and password
-        String url = "jdbc:mysql://localhost:3306/Instrument_Store_System";
-        String user = "username";
-        String password = "password";
-
         try {
-            // Connect to the database
-            Connection connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to the database!");
 
-            // Close the connection.
+            // Attemps to connect to the database.
+            @SuppressWarnings("unused")
+            Connection connection = DatabaseManager.getConnection();
+
+            // A connection to the Database has been made.
             System.out.println("Connection to database Validated.");
-            connection.close();
 
             // Launch the Application
             launch();
@@ -128,6 +122,14 @@ public class App extends Application {
         } catch (SQLException e) {
             System.out.println("Failed to connect to the database.\n Please download and setup the MySql Server.");
             e.printStackTrace();
+        } finally {
+            try {
+                // Close the database connection when the application finishes
+                DatabaseManager.closeConnection();
+            } catch (SQLException e) {
+                System.out.println("Failed to close the database connection.");
+                e.printStackTrace();
+            }
         }
        
     }

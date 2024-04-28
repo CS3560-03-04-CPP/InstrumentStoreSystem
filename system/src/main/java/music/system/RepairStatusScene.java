@@ -1,23 +1,21 @@
 package music.system;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.RepairItem;
-
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 public class RepairStatusScene {
     
@@ -73,7 +71,7 @@ public class RepairStatusScene {
     private static void populateRepairItems(TableView<RepairItem> tableView) {
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
     
             // Define SQL query to select all records from the database
             String query = "SELECT * FROM repair_items";
@@ -113,13 +111,13 @@ public class RepairStatusScene {
                 repairRecords.add(repairRecord);
             }
     
+            // Set the items in TableView
             tableView.setItems(repairRecords);
     
             // Close resources
-            System.out.println("Connection closed to the database: RepairItem Scene");
             resultSet.close();
             statement.close();
-            connection.close();
+
     
         } catch (Exception e) {
             e.printStackTrace();

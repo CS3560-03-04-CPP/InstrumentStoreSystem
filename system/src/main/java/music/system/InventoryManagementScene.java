@@ -1,40 +1,34 @@
 package music.system;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-import java.util.ResourceBundle.Control;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import music.system.SystemClasses.Item;
 import music.system.SystemClasses.archiveItem;
@@ -129,7 +123,7 @@ public class InventoryManagementScene {
                         LocalDate date = dateManufacturedPicker.getValue();
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
                         String formattedDate = date.format(formatter);
-                        System.out.println(formattedDate);
+                        
 
                         // Validate input fields
                         if (validateFields(nameField.getText(), categoryField.getText(), formattedDate, Integer.parseInt(serialNumberField.getText()), Double.parseDouble(manufacturerPriceField.getText()), Double.parseDouble(retailPriceField.getText()), descriptionField.getText())) {
@@ -210,6 +204,7 @@ public class InventoryManagementScene {
             // Close button
             Button closeButton = new Button("Close");
             closeButton.setOnAction(event -> {
+            try {DatabaseManager.closeConnection();} catch (SQLException e) {}
             primaryStage.close(); // Close the application
         });
 
@@ -226,7 +221,7 @@ public class InventoryManagementScene {
     }
 
     @SuppressWarnings("unchecked")
-    public static void addItem(@SuppressWarnings("exports") TableView tableView){
+    public static void addItem(@SuppressWarnings({ "exports", "rawtypes" }) TableView tableView){
         // Create an alert dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Add New Item");
@@ -340,7 +335,7 @@ public class InventoryManagementScene {
     private static void saveNewItemToDatabase(String name, String category, String brand, String dateManufactured, int serialNumber, double manufacturerPrice, double retailPrice, String description) {
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
 
             // Parse the date string into a Date object
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
@@ -381,6 +376,8 @@ public class InventoryManagementScene {
             preparedStatement.setDouble(7, (double) manufacturerPrice);
             preparedStatement.setDouble(8, (double) retailPrice);
             preparedStatement.setString(9, description.toString());
+
+            // Execute the insert query
             preparedStatement.executeUpdate();
     
             // Close resources
@@ -388,7 +385,6 @@ public class InventoryManagementScene {
             checkIDResult.close();
             checkIDStatement.close();
             statement.close();
-            connection.close();
     
             System.out.println("New item added to the database.");
         } catch (Exception e) {
@@ -399,7 +395,7 @@ public class InventoryManagementScene {
     private static void updateItemInDatabase(int itemID, String name, String category, String brand, String dateManufactured, int serialNumber, double manufacturerPrice, double retailPrice, String description) {
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
     
            // Parse the date string into a Date object
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
@@ -430,7 +426,6 @@ public class InventoryManagementScene {
     
             // Close resources
             preparedStatement.close();
-            connection.close();
     
         } catch (Exception e) {
             e.printStackTrace();
@@ -440,7 +435,7 @@ public class InventoryManagementScene {
     private static void populateInstrumentData(TableView<Item> tableView) {
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
     
             // Define SQL query to select all non-archived records from the database
             String query = "SELECT * FROM item WHERE itemID NOT IN (SELECT itemID FROM item_archive)";
@@ -473,10 +468,9 @@ public class InventoryManagementScene {
             tableView.setItems(itemList);
     
             // Close resources
-            System.out.println("Connection closed to the database: Instrument Management Scene");
             resultSet.close();
             statement.close();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

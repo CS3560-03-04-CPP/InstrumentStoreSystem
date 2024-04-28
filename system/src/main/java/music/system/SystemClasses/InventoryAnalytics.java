@@ -1,12 +1,12 @@
 package music.system.SystemClasses;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Random;
 
+import music.system.DatabaseManager;
 import music.system.SignInPage;
 
 public class InventoryAnalytics {
@@ -34,12 +34,12 @@ public class InventoryAnalytics {
     public void saveToDatabase() {
         try {
             // Establish connection to the database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
 
             // Define SQL query to insert inventory analytics data into the database
             String query = "INSERT INTO inventory_analytics (time, item_stock_count, sales_revenue, repairs_performed_count, average_age_of_inventory, total_inventory_value, users_employeeID) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            System.out.println("somthing is happening ;/"+ new java.sql.Timestamp(System.currentTimeMillis()));
+            
             // Create PreparedStatement
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setTimestamp(1, currentTime);
@@ -55,14 +55,14 @@ public class InventoryAnalytics {
 
             // Close resources
             preparedStatement.close();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static InventoryAnalytics performAnalyitics() {
-    // Generate random values for each attribute
+    // Generate random values for each attribute <-Temporary!
     Random random = new Random();
     int itemStockCount = random.nextInt(10); 
     double salesRevenue = random.nextDouble() * 100; 

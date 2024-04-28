@@ -1,5 +1,12 @@
 package music.system;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,14 +19,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.InventoryAnalytics;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.Date;
 
 public class ViewPastAnalyticsScene {
 
@@ -87,7 +86,6 @@ public class ViewPastAnalyticsScene {
         openButton.setOnAction(event -> {
             InventoryAnalytics selectedAnalytics = tableView.getSelectionModel().getSelectedItem();
             if (selectedAnalytics != null) {
-                System.out.println("Selected Analytics: " + selectedAnalytics);
                 InventoryAnalyticsScene.displayInventoryAnalytics(selectedAnalytics);
             } else {
                 System.out.println("No item selected.");
@@ -109,7 +107,7 @@ public class ViewPastAnalyticsScene {
     private static void populatePastAnalytics(TableView<InventoryAnalytics> tableView) {
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
 
             // Define SQL query to select all records from the database
             String query = "SELECT * FROM inventory_analytics";
@@ -139,10 +137,9 @@ public class ViewPastAnalyticsScene {
             tableView.setItems(analyticsList);
 
             // Close resources
-            System.out.println("Connection closed to the database: View Past Analytics Scene");
             resultSet.close();
             statement.close();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,7 +148,7 @@ public class ViewPastAnalyticsScene {
     private static void deleteAnalytics(InventoryAnalytics selectedAnalytics) {
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
     
             // Define SQL query to delete the selected record from the database
             String query = "DELETE FROM inventory_analytics WHERE time = ?";
@@ -161,9 +158,7 @@ public class ViewPastAnalyticsScene {
     
             // Convert Java Date to SQL Timestamp
             Timestamp timestamp = new Timestamp(selectedAnalytics.getTime().getTime());
-            System.out.println(timestamp);
-            System.out.println("selectedAnalytics timestamp: " + selectedAnalytics.getTime());
-            System.out.println("Converted timestamp: " + timestamp);
+            
             // Set parameters for the PreparedStatement
             preparedStatement.setTimestamp(1, timestamp);
     
@@ -178,7 +173,7 @@ public class ViewPastAnalyticsScene {
     
             // Close resources
             preparedStatement.close();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,9 +1,10 @@
 package music.system.SystemClasses;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.Date;
+
+import music.system.DatabaseManager;
 
 public class StoreRecord {
 
@@ -24,7 +25,7 @@ public class StoreRecord {
         transactionID = PurchaseDescription + id;
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
 
             // Define SQL query to insert store record data into the database
             String query = "INSERT INTO store_records (invoice_number, date) VALUES (?, ?)";
@@ -38,16 +39,15 @@ public class StoreRecord {
             preparedStatement.executeUpdate();
 
             // Close resources
-            System.out.println("Connection closed to the database: StoreRecord");
             preparedStatement.close();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
             // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+            Connection connection = DatabaseManager.getConnection();
 
             // Define SQL query to insert store record data into the database
             String query = "INSERT INTO item_store_records (store_transactions_transaction_id, store_records_invoice_number) VALUES (?, ?)";
@@ -61,9 +61,8 @@ public class StoreRecord {
             preparedStatement.executeUpdate();
 
             // Close resources
-            System.out.println("Connection closed to the database: StoreRecord");
             preparedStatement.close();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

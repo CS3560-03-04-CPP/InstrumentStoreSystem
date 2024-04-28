@@ -2,9 +2,7 @@ package music.system;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Random;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,7 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import music.system.SystemClasses.Item;
 import music.system.SystemClasses.StoreRecord;
 import music.system.SystemClasses.StoreTransaction;
 
@@ -30,7 +27,6 @@ public class StoreTransactionScene {
     private static int quantity;
     private static double unitPrice;
 
-    @SuppressWarnings("unchecked")
     public static void displayStoreTransactions() {
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Store Transactions");

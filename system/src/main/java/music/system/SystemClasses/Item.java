@@ -1,17 +1,9 @@
 package music.system.SystemClasses;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.time.LocalDate;
-import java.util.Date;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import music.system.DatabaseManager;
 
 public class Item {
 
@@ -50,7 +42,7 @@ public class Item {
         double averageAgeOfInventory, double totalInventoryValue, int currentUserID) {
             try {
                 // Establish connection to the database
-                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+                Connection connection = DatabaseManager.getConnection();
     
                 // Define SQL query to insert item data into the item table
                 String query = "INSERT INTO item (itemID, name, category, brand, dateManufactured, serialNumber, manufacturerPrice, retailPrice, description) " +
@@ -73,7 +65,7 @@ public class Item {
     
                 // Close resources
                 preparedStatement.close();
-                connection.close();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

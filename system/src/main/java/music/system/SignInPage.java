@@ -2,14 +2,12 @@ package music.system;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javafx.fxml.FXML;
-
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -41,15 +39,12 @@ public void setCurrentUser(int userID){
 
 // Method to validate user login credentials
 private void checkLogin() throws IOException {
-    // JDBC URL, username, and password of MySQL server
-    String url = "jdbc:mysql://localhost:3306/Instrument_Store_System";
-    String dbUsername = "username";
-    String dbPassword = "password";
+    
 
     // SQL query to check if username and password match
     String query = "SELECT * FROM users WHERE username = ? AND password = ?";
     
-    try (Connection connection = DriverManager.getConnection(url, dbUsername, dbPassword);
+    try (Connection connection = DatabaseManager.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
         // Set parameters for the query
