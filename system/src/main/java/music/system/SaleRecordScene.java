@@ -1,6 +1,7 @@
 package music.system;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -29,23 +30,19 @@ public class SaleRecordScene {
         TableColumn<SaleRecord, String> orderIdColumn = new TableColumn<>("Order ID");
         orderIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOrderId()));
 
-        TableColumn<SaleRecord, Date> dateColumn = new TableColumn<>("Date");
-        dateColumn.setCellValueFactory(cellData -> {
-            SimpleObjectProperty<Date> property = new SimpleObjectProperty<>();
-            property.setValue(new java.sql.Date(cellData.getValue().getDate().getTime()));
-            return property;
-        });
+        TableColumn<SaleRecord, String> DateColumn = new TableColumn<>("Date");
+        DateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDate()));
 
         TableColumn<SaleRecord, String> buyerNameColumn = new TableColumn<>("Buyer Name");
         buyerNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBuyerName()));
 
-        TableColumn<SaleRecord, String> buyerPhoneNumberColumn = new TableColumn<>("Buyer Phone Number");
-        buyerPhoneNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBuyerPhoneNumber()));
-
         TableColumn<SaleRecord, Double> soldPriceColumn = new TableColumn<>("Sold Price");
         soldPriceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getSoldPrice()).asObject());
 
-        tableView.getColumns().addAll(orderIdColumn, dateColumn, buyerNameColumn, buyerPhoneNumberColumn, soldPriceColumn);
+        TableColumn<SaleRecord, String> itemIDColumn = new TableColumn<>("Item's ID");
+        itemIDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOrderId().toString()));
+
+        tableView.getColumns().addAll(orderIdColumn, DateColumn, buyerNameColumn, soldPriceColumn);
 
         // TextField for search bar
         TextField searchField = new TextField();
@@ -84,11 +81,11 @@ public class SaleRecordScene {
             ObservableList<SaleRecord> saleRecords = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 SaleRecord saleRecord = new SaleRecord(
-                        resultSet.getString("order_id"),
-                        resultSet.getDate("date"),
+                        resultSet.getInt("id"),
+                        resultSet.getString("date"),
                         resultSet.getString("buyer_name"),
-                        resultSet.getString("buyer_phone_number"),
-                        resultSet.getDouble("sold_price")
+                        resultSet.getDouble("sold_price"),
+                        resultSet.getInt("itemID")
                 );
                 saleRecords.add(saleRecord);
             }
@@ -106,10 +103,10 @@ public class SaleRecordScene {
     }
 
     // Method to filter records based on phone number
-    private static void filterRecords(TableView<SaleRecord> tableView, String phoneNumber) {
+    private static void filterRecords(TableView<SaleRecord> tableView, String name) {
         ObservableList<SaleRecord> filteredData = FXCollections.observableArrayList();
         for (SaleRecord record : tableView.getItems()) {
-            if (record.getBuyerPhoneNumber().contains(phoneNumber)) {
+            if (record.getBuyerName().contains(name)) {
                 filteredData.add(record);
             }
         }

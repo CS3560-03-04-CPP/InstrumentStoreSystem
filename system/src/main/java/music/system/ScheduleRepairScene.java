@@ -1,74 +1,74 @@
 package music.system;
 
+import java.util.Calendar;
+import java.sql.Date;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.RepairItem;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 public class ScheduleRepairScene {
-    
-    @SuppressWarnings("unchecked")
+
     public static void displayScheduleRepair() {
-       Stage primaryStage = new Stage();
-       primaryStage.setTitle("Current Repairs");
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("Schedule Repair");
 
-       TableView<RepairItem> tableView = new TableView<>();
+        // Create labels and text fields for attributes
+        Label nameLabel = new Label("Name:");
+        TextField nameField = new TextField();
 
-        primaryStage.show();
+        Label descriptionLabel = new Label("Description:");
+        TextField descriptionField = new TextField();
 
-        populateSqeduleRepair(tableView);
-        
-    }
-    
-    private static void populateSqeduleRepair(TableView<RepairItem> tableView) {
-        try {
-            // Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+        Label fixPriceLabel = new Label("Fix Price:");
+        TextField fixPriceField = new TextField();
 
-            // Define SQL query to select all records from the database
-            String query = "SELECT * FROM repair_items";
+        // Button to send data to the database
+        Button addButton = new Button("Add Repair");
+        addButton.setOnAction(event -> {
+            // Get data from text fields
+            String name = nameField.getText();
+            String description = descriptionField.getText();
+            double fixPrice = 0.0; // Default value in case of invalid input
 
-            // Create a Statement
-            Statement statement = connection.createStatement();
-
-            // Execute the query and get the ResultSet
-            ResultSet resultSet = statement.executeQuery(query);
-            
-            // Populate TableView with the results
-            ObservableList<RepairItem> repairRecords = FXCollections.observableArrayList();
-            while (resultSet.next()) {
-                RepairItem repairRecord = new RepairItem(
-                        resultSet.getString("name"),
-                        resultSet.getString("description"),
-                        resultSet.getDouble("fixPrice")
-                );
-                repairRecords.add(repairRecord);
+            // Parse fix price, if valid
+            try {
+                fixPrice = Double.parseDouble(fixPriceField.getText());
+            } catch (NumberFormatException e) {
+                // Handle invalid input
+                System.err.println("Invalid fix price. Please enter a valid number.");
+                return; // Exit the method if fix price is invalid
             }
-            
-            tableView.setItems(repairRecords);
 
-            // Close resources
-            System.out.println("Connection closed to the database: RepairItem Scene");
-            resultSet.close();
-            statement.close();
-            connection.close();
-        
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            // Get the current date
+            Calendar calendar = Calendar.getInstance();
+            java.util.Date currentDate = calendar.getTime();
+            
+            // Convert the date into a SQL DATE object
+            Date sqlDate = new Date(currentDate.getTime());
+
+            String status = "ongoing";
+            // Create RepairItem object
+            RepairItem repairItem = new RepairItem(status, name, description, fixPrice, sqlDate);
+
+            // Call method to insert data into the database
+            repairItem.saveToMySQL();
+
+            // Clear fields after adding repair
+            nameField.clear();
+            descriptionField.clear();
+            fixPriceField.clear();
+        });
+
+        // Create layout and add components
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(nameLabel, nameField, descriptionLabel, descriptionField, fixPriceLabel, fixPriceField, addButton);
+
+        // Set scene
+        Scene scene = new Scene(layout, 300, 200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
-    
 }

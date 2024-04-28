@@ -10,6 +10,7 @@ public class StoreRecord {
     // Attributes
     private String invoiceNumber;             // Unique invoice number for the store record
     private Date date;                        // Date of the store record
+    private int transactionID;
 
     // Constructor
     public StoreRecord(String invoiceNumber, Date date) {
@@ -18,7 +19,9 @@ public class StoreRecord {
     }
 
     // Save to MySQL method
-    public void saveToMySQL() {
+    public void saveToMySQL(int PurchaseDescription, Integer id) {
+
+        transactionID = PurchaseDescription + id;
         try {
             // Establish connection to MySQL database
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
@@ -30,6 +33,29 @@ public class StoreRecord {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, invoiceNumber);
             preparedStatement.setDate(2, new java.sql.Date(date.getTime()));
+
+            // Execute the insert query
+            preparedStatement.executeUpdate();
+
+            // Close resources
+            System.out.println("Connection closed to the database: StoreRecord");
+            preparedStatement.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            // Establish connection to MySQL database
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+
+            // Define SQL query to insert store record data into the database
+            String query = "INSERT INTO item_store_records (store_transactions_transaction_id, store_records_invoice_number) VALUES (?, ?)";
+
+            // Create PreparedStatement
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, transactionID);
+            preparedStatement.setString(2, invoiceNumber);
 
             // Execute the insert query
             preparedStatement.executeUpdate();
@@ -54,6 +80,11 @@ public class StoreRecord {
 
     public Date getDate() {
         return date;
+    }
+
+    public Integer getID(){
+        Integer id = transactionID;
+        return id;
     }
 
     public void setDate(Date date) {

@@ -76,6 +76,7 @@ public class StoreRecordScene {
                 StoreRecord storeRecord = new StoreRecord(
                         resultSet.getString("invoice_number"),
                         resultSet.getDate("date")
+                        
                 );
                 storeRecords.add(storeRecord);
             }

@@ -3,11 +3,15 @@ package music.system.SystemClasses;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,20 +19,21 @@ import javafx.beans.property.StringProperty;
 public class SaleRecord {
 
     // Attributes
-    private StringProperty orderIdProperty;             // Unique order ID for the sale
-    private ObjectProperty<Date> dateProperty;          // Date of the sale
+    private IntegerProperty orderIdProperty;            // Unique order ID for the sale
+    private StringProperty dateProperty;                // Date of the sale
     private StringProperty buyerNameProperty;           // Name of the buyer
-    private StringProperty buyerPhoneNumberProperty;    // Phone number of the buyer
     private DoubleProperty soldPriceProperty;           // Price at which the item was sold
+    private IntegerProperty itemID;
 
     // Constructor
-    public SaleRecord(String orderId, Date date, String buyerName, String buyerPhoneNumber, double soldPrice) {
-        this.orderIdProperty = new SimpleStringProperty(orderId);
-        this.dateProperty = new SimpleObjectProperty<>(date);
+    public SaleRecord(Integer orderId, String date, String buyerName, double soldPrice, int itemID) {
+        this.orderIdProperty = new SimpleIntegerProperty(orderId);
+        this.dateProperty = new SimpleStringProperty(date);
         this.buyerNameProperty = new SimpleStringProperty(buyerName);
-        this.buyerPhoneNumberProperty = new SimpleStringProperty(buyerPhoneNumber);
         this.soldPriceProperty = new SimpleDoubleProperty(soldPrice);
+        this.itemID = new SimpleIntegerProperty(itemID);
     }
+
 
      // Save to MySQL method
     public void saveToMySQL() {
@@ -37,15 +42,39 @@ public class SaleRecord {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
 
             // Define SQL query to insert sale record data into the database
-            String query = "INSERT INTO sale_records (order_id, date, buyer_name, buyer_phone_number, sold_price) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO sale_records (id, date, buyer_name, sold_price, item_id) VALUES (?, ?, ?, ?, ?)";
 
             // Create PreparedStatement
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, orderIdProperty.get());
-            preparedStatement.setDate(2, new java.sql.Date(dateProperty.get().getTime()));
+            preparedStatement.setInt(1, orderIdProperty.get());
+            preparedStatement.setDate(2, convertStringToDate(dateProperty.get()));
             preparedStatement.setString(3, buyerNameProperty.get());
-            preparedStatement.setString(4, buyerPhoneNumberProperty.get());
-            preparedStatement.setDouble(5, soldPriceProperty.get());
+            preparedStatement.setDouble(4, soldPriceProperty.get());
+            preparedStatement.setInt(5, itemID.get());
+
+            // Execute the insert query
+            preparedStatement.executeUpdate();
+
+            // Close resources
+            System.out.println("Connection closed to the database: SaleRecord"); 
+            preparedStatement.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            // Establish connection to MySQL database
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+
+            // Define SQL query to insert sale record data into the database
+            String query = "INSERT INTO item_sale_records (sale_records_id, sale_transactions_transaction_id) VALUES (?, ?)";
+
+            // Create PreparedStatement
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, orderIdProperty.get());
+            preparedStatement.setInt(2, itemID.get());
+            
 
             // Execute the insert query
             preparedStatement.executeUpdate();
@@ -59,20 +88,23 @@ public class SaleRecord {
         }
     }
 
-    // Getter and Setter methods 
-    public String getOrderId() {
-        return orderIdProperty.get();
+    public static java.sql.Date convertStringToDate(String dateString) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date = sdf.parse(dateString);
+            return new java.sql.Date(date.getTime());
+        } catch (ParseException e) {
+            // Handle the exception appropriately
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public void setOrderId(String orderId) {
-        this.orderIdProperty.set(orderId);
+    public String getDate() {
+        return dateProperty.get().toString();
     }
 
-    public Date getDate() {
-        return dateProperty.get();
-    }
-
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.dateProperty.set(date);
     }
 
@@ -84,14 +116,6 @@ public class SaleRecord {
         this.buyerNameProperty.set(buyerName);
     }
 
-    public String getBuyerPhoneNumber() {
-        return buyerPhoneNumberProperty.get();
-    }
-
-    public void setBuyerPhoneNumber(String buyerPhoneNumber) {
-        this.buyerPhoneNumberProperty.set(buyerPhoneNumber);
-    }
-
     public double getSoldPrice() {
         return soldPriceProperty.get();
     }
@@ -100,15 +124,8 @@ public class SaleRecord {
         this.soldPriceProperty.set(soldPrice);
     }
 
-    // Override toString method to provide a string representation of the SaleRecord object
-    @Override
-    public String toString() {
-        return "SaleRecord{" +
-                "orderId='" + getOrderId() + '\'' +
-                ", date=" + getDate() +
-                ", buyerName='" + getBuyerName() + '\'' +
-                ", buyerPhoneNumber='" + getBuyerPhoneNumber() + '\'' +
-                ", soldPrice=" + getSoldPrice() +
-                '}';
+    public String getOrderId() {
+        return itemID.toString();
     }
+
 }

@@ -44,7 +44,8 @@ public class Item {
 
     }
 
-        // Method to save inventory analytics data to the database
+
+        // Method to save inventory and analytics data to the database
         public void saveToDatabase(double itemStockCount, double salesRevenue, int repairsPerformedCount,
         double averageAgeOfInventory, double totalInventoryValue, int currentUserID) {
             try {

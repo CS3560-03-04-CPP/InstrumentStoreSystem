@@ -1,5 +1,10 @@
 package music.system;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,7 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import music.system.SystemClasses.archiveClass;
+import music.system.SystemClasses.archiveItem;
 import music.system.SystemClasses.Item;
 
 public class ArchiveScene {
@@ -62,18 +67,46 @@ public class ArchiveScene {
     }
 
     private static void populateArchiveItems(TableView<Item> tableView) {
-        archiveClass archive = new archiveClass();
-        ObservableList<Item> items = FXCollections.observableArrayList();
-
         try {
-            // Populate TableView with items from the archive
-            items.addAll(archive.getAllItems());
+            // Establish connection to MySQL database
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
+    
+            // Define SQL query to select all records from the database
+            String query = "SELECT * FROM archive";
+    
+            // Create a Statement
+            Statement statement = connection.createStatement();
+    
+            // Execute the query and get the ResultSet
+            ResultSet resultSet = statement.executeQuery(query);
+    
+            // Populate TableView with the results
+            ObservableList<Item> archiveItems = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                Item archiveItem = new Item(
+                    resultSet.getInt("itemID"),
+                    resultSet.getInt("serialNumber"),
+                    resultSet.getString("name"),
+                    resultSet.getString("category"),
+                    resultSet.getString("brand"),
+                    resultSet.getString("dateManufactured"),
+                    resultSet.getString("description"),
+                    resultSet.getDouble("manufacturerPrice"),
+                    resultSet.getDouble("retailPrice")
+                );
+                archiveItems.add(archiveItem);
+            }
+    
+            tableView.setItems(archiveItems);
+    
+            // Close resources
+            System.out.println("Connection closed to the database: archive Scene");
+            resultSet.close();
+            statement.close();
+            connection.close();
+    
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            archive.closeConnection();
         }
-
-        tableView.setItems(items);
     }
 }

@@ -1,14 +1,15 @@
-/*
-Need to create an enumerated type called Status:
-    Have it contain in progress and completed
-
-*/
 package music.system.SystemClasses;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.util.Date;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.time.LocalDate;
+import java.sql.Date;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -21,56 +22,145 @@ public class RepairItem {
     
     //Attributes
     private StringProperty nameProperty;             // Name of RepairItem
+    private StringProperty statusProperty;           // Status feild
     private StringProperty descriptionProperty;      // Description of RepairItem
     private DoubleProperty fixPriceProperty;         // Price at which the item is to be repaired
-
+    private Date date;                               // Date when the repair was initiated
     private int repairId;
-    private String name;
-    private String description;
-    private double fixPrice;
 
     //Constructor
-    public RepairItem(String name, String description, double fixPrice) {
+    public RepairItem(String status, String name, String description, double fixPrice, Date date) {
+        this.statusProperty = new SimpleStringProperty(status); 
         this.nameProperty = new SimpleStringProperty(name);
         this.descriptionProperty = new SimpleStringProperty(description);
         this.fixPriceProperty = new SimpleDoubleProperty(fixPrice);
+        this.date = date;
+        updateDaysLeft();
     }
     
     // Save to MySQL method
     public void saveToMySQL() {
-        try {
-            //Establish connection to MySQL database
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
-            
-            //Define SQL query to insert RepairItem data into the database
-            String query = "INSERT INTO repair_items (name, description, fixPrice) VALUES (?, ?, ?)";
-            
-            // Create PreparedStatement
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, nameProperty.get());
-            preparedStatement.setString(2, descriptionProperty.get());
-            preparedStatement.setDouble(3, fixPriceProperty.get());
+    try {
+        // Establish connection to MySQL database
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Instrument_Store_System", "username", "password");
 
-            // Execute the insert query
-            preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Define SQL query to fetch the last primary key value
+        String getLastIdQuery = "SELECT MAX(itemID) FROM item";
+
+        // Create a Statement
+        Statement statement = connection.createStatement();
+
+        // Execute the query to fetch the last primary key value
+        ResultSet resultSet = statement.executeQuery(getLastIdQuery);
+
+        int lastIdItem = 0;
+        if (resultSet.next()) {
+            lastIdItem = resultSet.getInt(1);
+        }
+        // Increment the last primary key value by one
+        int itemId = lastIdItem + 1;
+
+        // Get the current date
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date currentDate = calendar.getTime();
+        
+        // Convert the date into a SQL DATE object
+        Date sqlDate = new Date(currentDate.getTime());
+
+        Item tempItemForRepair = new Item(itemId, 0, nameProperty.get().toString(), "Repair", "Unknown", sqlDate.toString(), "Temporary repair item", 0.0, 0.0);
+        tempItemForRepair.saveToDatabase(1.0, (double) fixPriceProperty.get(), 1, 0.0, 0.0, 0);
+        
+        // Define SQL query to fetch the last primary key value
+        getLastIdQuery = "SELECT MAX(repairId) FROM repair_items";
+
+        // Create a Statement
+        statement = connection.createStatement();
+
+        // Execute the query to fetch the last primary key value
+        resultSet = statement.executeQuery(getLastIdQuery);
+
+        int lastId = 0;
+        if (resultSet.next()) {
+            lastId = resultSet.getInt(1);
+        }
+
+        // Increment the last primary key value by one
+        repairId = lastId + 1;
+        
+        // Define SQL query to insert RepairItem data into the database
+        String insertQuery = "INSERT INTO repair_items (repairId, status, name, description, fixPrice, date) VALUES (?, ?, ?, ?, ?, ?)";
+
+        // Create PreparedStatement
+        PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+        preparedStatement.setInt(1, repairId);
+        preparedStatement.setString(2, statusProperty.get());
+        preparedStatement.setString(3, nameProperty.get());
+        preparedStatement.setString(4, descriptionProperty.get());
+        preparedStatement.setDouble(5, fixPriceProperty.get());
+        preparedStatement.setDate(6, sqlDate);
+
+        // Execute the insert query
+        preparedStatement.executeUpdate();
+
+        // Insert into item_repair_items table
+        String insertItemRepairQuery = "INSERT INTO item_repair_items (itemID, repair_items_repairId) VALUES (?, ?)";
+        PreparedStatement itemRepairStatement = connection.prepareStatement(insertItemRepairQuery);
+        itemRepairStatement.setInt(1, itemId);
+        itemRepairStatement.setInt(2, repairId);
+        itemRepairStatement.executeUpdate();
+        itemRepairStatement.close();
+
+        // Close resources
+        resultSet.close();
+        statement.close();
+        preparedStatement.close();
+        connection.close();
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+    // Method to calculate days left
+    public void updateDaysLeft() {
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.setTime(date);
+        currentDate.add(Calendar.DAY_OF_MONTH, 3);
+
+        Calendar now = Calendar.getInstance();
+        long millisLeft = currentDate.getTimeInMillis() - now.getTimeInMillis();
+        int daysLeft = (int) (millisLeft / (1000 * 60 * 60 * 24));
+
+        if (daysLeft <= 0) {
+            statusProperty.set("Expired");
+        } else {
+            statusProperty.set(daysLeft + " days left");
         }
     }
-
-    //generate a RepairId when technician enters item into system
-    //return repairId
-    private int generateRepairId() {
-        return 0;
-    }
     
+    //Getters and Setters
+        
+    //get days left
+    public String getDaysLeft() {
+        return statusProperty.get();
+    }
+
+    //get days left
+    public Date getDate() {
+        return date;
+    }
+
+    //set new Status
+    public String setStatus(String statusString) {
+        statusProperty.set(statusString);
+        return statusString;
+    }
+
     //get the repairId
     public int getRepairId() {
         return repairId;
     }
-    
-    //Getters and Setters
-    
+
     //set the name of the repair
     public void setName(String name) {
         this.nameProperty.set(name);
@@ -100,6 +190,10 @@ public class RepairItem {
     //get the price
     public double getPrice() {
         return fixPriceProperty.get();
+    }
+
+    public String getStatus() {
+        return statusProperty.get();
     }
 
 }
