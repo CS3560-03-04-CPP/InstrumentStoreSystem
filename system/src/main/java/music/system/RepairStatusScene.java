@@ -17,6 +17,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.RepairItem;
 
+/**
+ * JavaFX Scene, RepairStatusScene: This scene opens the repair status window.
+ * 
+ * Functionality: Displays all the entries in the repair table. 
+ *                Search bar which takes in name.
+ * 
+ */
 public class RepairStatusScene {
     
     @SuppressWarnings("unchecked")
@@ -124,7 +131,7 @@ public class RepairStatusScene {
         }
     }
     
-    // Method to filter records
+    // Method to filter records by name
     private static void filterRecords(TableView<RepairItem> tableView, String searchText) {
         if (searchText.isEmpty()) {
             populateRepairItems(tableView);

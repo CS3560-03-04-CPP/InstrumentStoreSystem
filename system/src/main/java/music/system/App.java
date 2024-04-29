@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
-    // Static fields for storing scene and primary stage
+    // Static fields for storing scene and primary stage.
     private static Scene scene;
     private static Stage primaryStage;
     private static int currentRootPage;
@@ -30,13 +30,13 @@ public class App extends Application {
 
         // At any point either the sign in page or the inventory pages will be open,
         // these are the programs "root" Stages and this integer keeps track of which
-        // page is currently open.
+        // page is currently open while the program is open.
         currentRootPage = 0;
 
-        // Loading the SignInPage FXML file and creating a scene
+        // Loading the SignInPage FXML file and creating a scene.
         scene = new Scene(loadFXML("SignInPage"), 600, 300);
 
-         // Setting stage properties
+        // Setting stage properties.
         setSizeSignIn();
         stage.setTitle("StoreInventorySystem");
         stage.setScene(scene);
@@ -45,7 +45,7 @@ public class App extends Application {
         centerStageOnScreen(stage);
     }
 
-    // Method to set the root of the scene
+    // Method to set the root of the scene.
     static void setRoot(String fxml) throws IOException {
         Parent root = loadFXML(fxml);
         scene.setRoot(root);
@@ -66,13 +66,13 @@ public class App extends Application {
     }
 
 
-    // Method to load FXML file
+    // Method to load a FXML file.
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
-    // Method to Set size of Signin Window
+    // Method to Set size of Signin Window.
     public static void setSizeSignIn()
     {
         primaryStage.setMaxHeight(400);
@@ -82,7 +82,7 @@ public class App extends Application {
 
     }
 
-    // Method to Set size of Inventory Window
+    // Method to Set size/properties of Inventory Window.
     public static void setSizeInventory(@SuppressWarnings("exports") Pane pane)
     {
         double prefWidth = Math.min(pane.getPrefWidth(), Screen.getPrimary().getVisualBounds().getWidth());
@@ -97,14 +97,14 @@ public class App extends Application {
 
     }
 
-     // Method to center the stage on the screen
+     // Method to center the stage on the screen.
      private static void centerStageOnScreen(Stage stage) {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
         stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
     }
 
-    // Main method to launch the application
+    // Main method to launch the application.
     public static void main(String[] args) {
         
         try {
@@ -116,7 +116,7 @@ public class App extends Application {
             // A connection to the Database has been made.
             System.out.println("Connection to database Validated.");
 
-            // Launch the Application
+            // Launch the Application.
             launch();
 
         } catch (SQLException e) {
@@ -124,7 +124,7 @@ public class App extends Application {
             e.printStackTrace();
         } finally {
             try {
-                // Close the database connection when the application finishes
+                // Close the database connection when the application finishes.
                 DatabaseManager.closeConnection();
             } catch (SQLException e) {
                 System.out.println("Failed to close the database connection.");

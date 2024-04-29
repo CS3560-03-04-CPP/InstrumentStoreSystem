@@ -17,6 +17,13 @@ import javafx.stage.Stage;
 import music.system.SystemClasses.SaleRecord;
 import music.system.SystemClasses.SaleTransaction;
 
+/**
+ * JavaFX Scene, SaleTransactionScene: This scene opens the Sale Transaction window.
+ * 
+ * Functionality: Allows for input for a new sale transaction entry 
+ *                If all entered attributes are valid, it archives the item which was sold.
+ * 
+ */
 public class SaleTransactionScene {
 
     private static String buyerName;

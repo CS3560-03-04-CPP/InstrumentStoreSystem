@@ -13,13 +13,22 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import music.system.DatabaseManager;
 
+/**
+ * System Class, SaleRecord: This class handles the creation of a new sale record entry.
+ * 
+ * Database table sale_records, links to sale_transactions table with a item_sale_records:
+ * 
+ *                              FK                                                          PK
+ *           item_sale_records: sale_record_id                  from sale_records table     (id)
+ *                              sale_transaction_transaction_id from sale_transacions table (transaction_id)
+ * 
+ */
 public class SaleRecord {
 
-    // Attributes
-    private IntegerProperty orderIdProperty;            // Unique order ID for the sale
-    private StringProperty dateProperty;                // Date of the sale
-    private StringProperty buyerNameProperty;           // Name of the buyer
-    private DoubleProperty soldPriceProperty;           // Price at which the item was sold
+    private IntegerProperty orderIdProperty;            
+    private StringProperty dateProperty;                
+    private StringProperty buyerNameProperty;           
+    private DoubleProperty soldPriceProperty;          
     private IntegerProperty itemID;
 
     // Constructor
@@ -31,8 +40,7 @@ public class SaleRecord {
         this.itemID = new SimpleIntegerProperty(itemID);
     }
 
-
-     // Save to MySQL method
+    // Save to MySQL method
     public void saveToMySQL() {
         try {
             // Establish connection to MySQL database
@@ -95,32 +103,19 @@ public class SaleRecord {
         }
     }
 
-    public String getDate() {
-        return dateProperty.get().toString();
-    }
+    // Setters and Getters
+    public String getDate() {return dateProperty.get().toString();}
 
-    public void setDate(String date) {
-        this.dateProperty.set(date);
-    }
+    public void setDate(String date) {this.dateProperty.set(date);}
 
-    public String getBuyerName() {
-        return buyerNameProperty.get();
-    }
+    public String getBuyerName() {return buyerNameProperty.get();}
 
-    public void setBuyerName(String buyerName) {
-        this.buyerNameProperty.set(buyerName);
-    }
+    public void setBuyerName(String buyerName) {this.buyerNameProperty.set(buyerName);}
 
-    public double getSoldPrice() {
-        return soldPriceProperty.get();
-    }
+    public double getSoldPrice() {return soldPriceProperty.get();}
 
-    public void setSoldPrice(double soldPrice) {
-        this.soldPriceProperty.set(soldPrice);
-    }
+    public void setSoldPrice(double soldPrice) {this.soldPriceProperty.set(soldPrice);}
 
-    public String getOrderId() {
-        return itemID.toString();
-    }
+    public String getOrderId() {return itemID.toString();}
 
 }

@@ -7,10 +7,14 @@ import java.util.Date;
 
 import music.system.DatabaseManager;
 
+/**
+ * System Class, StoreTransaction: This class handles the creation of a new store transaction entry.
+ * 
+ * Database table store_transaction, links to item table with a item_itemID attribute.
+ * 
+ */
 public class StoreTransaction {
 
-    // Attributes
-    private int transactionID;
     private Date transactionDate;
     private double totalAmount;
     private String purchaseDescription;
@@ -72,64 +76,26 @@ public class StoreTransaction {
     }
 
     // Getters and Setters
-    public int getId() {
-        return itemID;
-    }
+    public int getId() {return itemID;}
 
-    public void setId(int id) {
-        this.transactionID = id;
-    }
+    public Date getTransactionDate() {return transactionDate;}
 
-    public Date getTransactionDate() {
-        return transactionDate;
-    }
+    public void setTransactionDate(Date transactionDate) {this.transactionDate = transactionDate;}
 
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
-    }
+    public double getTotalAmount() {return totalAmount;}
 
-    public double getTotalAmount() {
-        return totalAmount;
-    }
+    public void setTotalAmount(double totalAmount) {this.totalAmount = totalAmount;}
 
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+    public String getPurchaseDescription() {return purchaseDescription;}
 
-    public String getPurchaseDescription() {
-        return purchaseDescription;
-    }
+    public void setPurchaseDescription(String purchaseDescription) {this.purchaseDescription = purchaseDescription;}
 
-    public void setPurchaseDescription(String purchaseDescription) {
-        this.purchaseDescription = purchaseDescription;
-    }
+    public int getQuantity() {return quantity;}
 
-    public int getQuantity() {
-        return quantity;
-    }
+    public void setQuantity(int quantity) {this.quantity = quantity;}
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    public double getUnitPrice() {return unitPrice;}
 
-    public double getUnitPrice() {
-        return unitPrice;
-    }
+    public void setUnitPrice(double unitPrice) {this.unitPrice = unitPrice;}
 
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    // Override toString method to provide a string representation of the StoreTransaction object
-    @Override
-    public String toString() {
-        return "StoreTransaction{" +
-                "id=" + transactionID +
-                ", transactionDate=" + transactionDate +
-                ", totalAmount=" + totalAmount +
-                ", purchaseDescription='" + purchaseDescription + '\'' +
-                ", quantity=" + quantity +
-                ", unitPrice=" + unitPrice +
-                '}';
-    }
 }

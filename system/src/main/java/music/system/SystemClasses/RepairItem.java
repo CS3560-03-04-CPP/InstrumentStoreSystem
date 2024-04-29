@@ -13,14 +13,25 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import music.system.DatabaseManager;
 
+/**
+ * System Class, RepairItem: This class handles creation of a new repair entry,
+ * In order to keep track of this repair a new temp item entry is generated with default attributes
+ * and marked as a temporary item with the name of the client.
+ * 
+ * Database table repair_items, links to item table with a Item_repair_items:
+ * 
+ *                              FK                                              PK
+ *           item_repair_items: itemID                from item table           (itemID)
+ *                              repair_items_repairID from repair_items table   (Last created itemID[temp item entry] plus 1)
+ * 
+ */
 public class RepairItem {
     
-    //Attributes
-    private StringProperty nameProperty;             // Name of RepairItem
-    private StringProperty statusProperty;           // Status feild
-    private StringProperty descriptionProperty;      // Description of RepairItem
-    private DoubleProperty fixPriceProperty;         // Price at which the item is to be repaired
-    private Date date;                               // Date when the repair was initiated
+    private StringProperty nameProperty;            
+    private StringProperty statusProperty;           
+    private StringProperty descriptionProperty;     
+    private DoubleProperty fixPriceProperty;         
+    private Date date;                   
     private int repairId;
 
     //Constructor
@@ -136,61 +147,26 @@ public class RepairItem {
     }
     
     //Getters and Setters
-        
-    //get days left
-    public String getDaysLeft() {
-        return statusProperty.get();
-    }
+    public String getDaysLeft() {return statusProperty.get();}
 
-    //get days left
-    public Date getDate() {
-        return date;
-    }
+    public Date getDate() {return date;}
 
-    //set new Status
-    public String setStatus(String statusString) {
-        statusProperty.set(statusString);
-        return statusString;
-    }
+    public String setStatus(String statusString) {statusProperty.set(statusString); return statusString;}
 
-    //get the repairId
-    public int getRepairId() {
-        return repairId;
-    }
+    public int getRepairId() {return repairId;}
 
-    //set the name of the repair
-    public void setName(String name) {
-        this.nameProperty.set(name);
-    }
+    public void setName(String name) {this.nameProperty.set(name);}
 
-    //get the name of the repair
-    public String getName() {
-        return nameProperty.get();
-    }
+    public String getName() {return nameProperty.get();}
 
-    //set the description
-    public void setDescription(String description) {
-        this.descriptionProperty.set(description);
-    }
+    public void setDescription(String description) {this.descriptionProperty.set(description);}
 
-    //get the description
-    public String getDescription() {
-        return descriptionProperty.get();
-    }
+    public String getDescription() {return descriptionProperty.get();}
 
-    //set the price of the fix
-    public void setPrice(double fixPrice) {
-        //check if the price is below zero, if it is then reprompt user
-        this.fixPriceProperty.set(fixPrice);
-    }
+    public void setPrice(double fixPrice) {this.fixPriceProperty.set(fixPrice);}
 
-    //get the price
-    public double getPrice() {
-        return fixPriceProperty.get();
-    }
+    public double getPrice() {return fixPriceProperty.get();}
 
-    public String getStatus() {
-        return statusProperty.get();
-    }
+    public String getStatus() {return statusProperty.get();}
 
 }

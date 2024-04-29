@@ -9,6 +9,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.RepairItem;
 
+/**
+ * JavaFX Scene, ScheduleRepairScene: This scene opens the Schedule Repair window.
+ * 
+ * Functionality: Allows for input for a new repair tast, name, description, and price for repair.
+ * 
+ */
 public class ScheduleRepairScene {
 
     public static void displayScheduleRepair() {

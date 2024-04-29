@@ -6,11 +6,20 @@ import java.util.Date;
 
 import music.system.DatabaseManager;
 
+/**
+ * System Class, StoreRecord: This class handles the creation of a new store record entry.
+ * 
+ * Database table store_records, links to store_transactions table with a item_store_records:
+ * 
+ *                               FK                                                                  PK
+ *           item_store_records: store_transacrions_transaction_id from store_transacions table     (transaction_id)
+ *                               store_records_invoice_numbner     from store_records table         (invoice_number)
+ * 
+ */
 public class StoreRecord {
 
-    // Attributes
-    private String invoiceNumber;             // Unique invoice number for the store record
-    private Date date;                        // Date of the store record
+    private String invoiceNumber;             
+    private Date date;                        
     private int transactionID;
 
     // Constructor
@@ -69,33 +78,14 @@ public class StoreRecord {
     }
 
     // Getters and Setters
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
+    public String getInvoiceNumber() {return invoiceNumber;}
 
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
+    public void setInvoiceNumber(String invoiceNumber) {this.invoiceNumber = invoiceNumber;}
 
-    public Date getDate() {
-        return date;
-    }
+    public Date getDate() {return date;}
 
-    public Integer getID(){
-        Integer id = transactionID;
-        return id;
-    }
+    public Integer getID(){Integer id = transactionID; return id;}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    public void setDate(Date date) {this.date = date;}
 
-    // Override toString method to provide a string representation of the StoreRecord object
-    @Override
-    public String toString() {
-        return "StoreRecord{" +
-                "invoiceNumber='" + invoiceNumber + '\'' +
-                ", date=" + date +
-                '}';
-    }
 }

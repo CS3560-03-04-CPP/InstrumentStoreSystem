@@ -5,9 +5,11 @@ import java.sql.PreparedStatement;
 
 import music.system.DatabaseManager;
 
+/**
+ * System Class, Item: This class handles the generation of a new item entry to the database.
+ */
 public class Item {
 
-    // Declaring Variables
     private int itemID;
 
     private String name;
@@ -37,111 +39,75 @@ public class Item {
     }
 
 
-        // Method to save inventory and analytics data to the database
-        public void saveToDatabase(double itemStockCount, double salesRevenue, int repairsPerformedCount,
-        double averageAgeOfInventory, double totalInventoryValue, int currentUserID) {
-            try {
-                // Establish connection to the database
-                Connection connection = DatabaseManager.getConnection();
+    // Method to save inventory and analytics data to the database
+    public void saveToDatabase(double itemStockCount, double salesRevenue, int repairsPerformedCount,
+    double averageAgeOfInventory, double totalInventoryValue, int currentUserID) {
+        try {
+            // Establish connection to the database
+            Connection connection = DatabaseManager.getConnection();
     
-                // Define SQL query to insert item data into the item table
-                String query = "INSERT INTO item (itemID, name, category, brand, dateManufactured, serialNumber, manufacturerPrice, retailPrice, description) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            // Define SQL query to insert item data into the item table
+            String query = "INSERT INTO item (itemID, name, category, brand, dateManufactured, serialNumber, manufacturerPrice, retailPrice, description) " +
+                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
-                // Create PreparedStatement
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setInt(1, this.itemID);
-                preparedStatement.setString(2, this.name);
-                preparedStatement.setString(3, this.category);
-                preparedStatement.setString(4, this.brand);
-                preparedStatement.setString(5, this.dateManufactured);
-                preparedStatement.setInt(6, this.serialNumber);
-                preparedStatement.setDouble(7, this.manufacturerPrice);
-                preparedStatement.setDouble(8, this.retailPrice);
-                preparedStatement.setString(9, this.description);
+            // Create PreparedStatement
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, this.itemID);
+            preparedStatement.setString(2, this.name);
+            preparedStatement.setString(3, this.category);
+            preparedStatement.setString(4, this.brand);
+            preparedStatement.setString(5, this.dateManufactured);
+            preparedStatement.setInt(6, this.serialNumber);
+            preparedStatement.setDouble(7, this.manufacturerPrice);
+            preparedStatement.setDouble(8, this.retailPrice);
+            preparedStatement.setString(9, this.description);
     
-                // Execute the insert query
-                preparedStatement.executeUpdate();
+            // Execute the insert query
+            preparedStatement.executeUpdate();
     
-                // Close resources
-                preparedStatement.close();
+            // Close resources
+            preparedStatement.close();
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Getters and Setters
-    public int getitemID() {
-        return itemID;
-    }
+    public int getitemID() {return itemID;}
 
-    public void setitemID(int id) {
-        this.itemID = id;
-    }
+    public void setitemID(int id) {this.itemID = id;}
 
-    public String getName() {
-        return name;
-    }
+    public String getName() {return name;}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) {this.name = name;}
 
-    public String getCategory() {
-        return category;
-    }
+    public String getCategory() {return category;}
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    public void setCategory(String category) {this.category = category;}
 
-    public String getBrand() {
-        return brand;
-    }
+    public String getBrand() {return brand;}
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
+    public void setBrand(String brand) {this.brand = brand;}
 
-    public String getdateManufactured() {
-        return dateManufactured;
-    }
+    public String getdateManufactured() {return dateManufactured;}
 
-    public void setdateManufactured(String dateManufactured2) {
-        this.dateManufactured = dateManufactured2;
-    }
+    public void setdateManufactured(String dateManufactured2) {this.dateManufactured = dateManufactured2;}
 
-    public int getserialNumber() {
-        return serialNumber;
-    }
+    public int getserialNumber() {return serialNumber;}
 
-    public void setSerialNumber(int serial) {
-        this.serialNumber = serial;
-    }
+    public void setSerialNumber(int serial) {this.serialNumber = serial;}
 
-    public double getmanufacturerPrice() {
-        return manufacturerPrice;
-    }
+    public double getmanufacturerPrice() {return manufacturerPrice;}
 
-    public void setmanufacturerPrice(double manufacturerPrice) {
-        this.manufacturerPrice = manufacturerPrice;
-    }
+    public void setmanufacturerPrice(double manufacturerPrice) {this.manufacturerPrice = manufacturerPrice;}
 
-    public double getretailPrice() {
-        return retailPrice;
-    }
+    public double getretailPrice() {return retailPrice;}
 
-    public void setretailPrice(double retailPrice) {
-        this.retailPrice = retailPrice;
-    }
+    public void setretailPrice(double retailPrice) {this.retailPrice = retailPrice;}
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() {return description;}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setDescription(String description) {this.description = description;}
 
 }

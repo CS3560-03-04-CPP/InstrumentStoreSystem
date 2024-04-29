@@ -16,6 +16,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.Item;
 
+/**
+ * JavaFX Scene, ArchiveScene: This scene opens the archive form.
+ * 
+ * Functionality: Opens a javaFX window that shows a query result for all archived item.
+ * 
+ */
 public class ArchiveScene {
 
     @SuppressWarnings("unchecked")
@@ -102,7 +108,6 @@ public class ArchiveScene {
             // Close resources
             resultSet.close();
             statement.close();
-
     
         } catch (Exception e) {
             e.printStackTrace();

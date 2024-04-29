@@ -19,6 +19,14 @@ import javafx.stage.Stage;
 import music.system.SystemClasses.StoreRecord;
 import music.system.SystemClasses.StoreTransaction;
 
+/**
+ * JavaFX Scene, StoreTransactionScene: This scene opens the Store Transaction window.
+ * 
+ * Functionality: Allows for input for a new store transaction entry 
+ *                If all entered attributes are valid, it calls addItem from the item class
+ *                and a new window to input the store's new instrument opens.
+ * 
+ */
 public class StoreTransactionScene {
 
     private static Date transactionDate;

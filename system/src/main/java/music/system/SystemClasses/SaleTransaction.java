@@ -14,18 +14,23 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import music.system.DatabaseManager;
 
+/**
+ * System Class, SaleTransaction: This class handles the creation of a new sale transaction entry.
+ * 
+ * Database table sale_transaction, links to item table with a item_itemID attribute.
+ * 
+ */
 public class SaleTransaction {
 
-    // Attributes
-    private Integer orderIdProperty;                     // Unique order ID for the sale
-    private StringProperty buyerNameProperty;            // Name of the buyer
-    private StringProperty cardNumberProperty;           // Card number
-    private ObjectProperty<Date> expirationDateProperty; // Expiration date of the card
-    private StringProperty CVVProperty;                  // CVV code
-    private StringProperty billingAddressProperty;       // Billing address
-    private StringProperty billingPostalCodeProperty;    // Billing postal code
-    private DoubleProperty transactionAmountProperty;    // Transaction amount
-    private Integer itemID;                              // Item ID
+    private Integer orderIdProperty;                     
+    private StringProperty buyerNameProperty;            
+    private StringProperty cardNumberProperty;           
+    private ObjectProperty<Date> expirationDateProperty; 
+    private StringProperty CVVProperty;                  
+    private StringProperty billingAddressProperty;       
+    private StringProperty billingPostalCodeProperty;    
+    private DoubleProperty transactionAmountProperty;    
+    private Integer itemID;                             
 
     // Constructor
     public SaleTransaction( String buyerName, String cardNumber, LocalDate expirationDate, String CVV,
@@ -74,23 +79,13 @@ public class SaleTransaction {
         }
     }
 
+    // Getter and Setter methods 
+    public Integer getOrderId() {return orderIdProperty;}
     
-
-        // Getter and Setter methods 
-        public Integer getOrderId() {
-            return orderIdProperty;
-        }
+    public void setOrderId(int orderId) {this.orderIdProperty = orderId;}
     
-        public void setOrderId(int orderId) {
-            this.orderIdProperty = orderId;
-        }
+    public String getBuyerName() {return buyerNameProperty.get();}
     
-        public String getBuyerName() {
-            return buyerNameProperty.get();
-        }
-    
-        public void setBuyerName(String buyerName) {
-            this.buyerNameProperty.set(buyerName);
-        }
+    public void setBuyerName(String buyerName) {this.buyerNameProperty.set(buyerName);}
     
 }

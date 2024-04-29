@@ -17,6 +17,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.StoreRecord;
 
+/**
+ * JavaFX Scene, StoreRecordScene: This scene opens the Store Record window.
+ * 
+ * Functionality: Displays all the entries in the store records table. 
+ *                Search bar which takes in a Invoice Number.
+ * 
+ */
 public class StoreRecordScene {
 
     @SuppressWarnings("unchecked")

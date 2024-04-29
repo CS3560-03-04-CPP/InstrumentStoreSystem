@@ -20,6 +20,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.InventoryAnalytics;
 
+/**
+ * JavaFX Scene, ViewPastAnalyticsScene: This scene opens the View Past Analyitics window.
+ * 
+ * Functionality: Shows a list from the database table archive.
+ *                When a item is highlighted, the open button can be used to open a new window that displays the analytics
+ *                as if it was first generated. Finally by the side of each past entry a delete button exists to remove it entirly.
+ * 
+ */
 public class ViewPastAnalyticsScene {
 
     @SuppressWarnings("unchecked")

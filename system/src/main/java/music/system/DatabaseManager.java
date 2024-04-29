@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
+/**
+ * Application Class, DatabaseManager: allows for minumun connections to the database
+ */
 public class DatabaseManager {
     private static Connection connection;
 

@@ -6,20 +6,36 @@ import java.sql.SQLException;
 
 import music.system.DatabaseManager;
 
+/**
+ * System Class, archiveItem: This class handles the INSERT command into the database for a new archive item.
+ * 
+ * Database table Archive, links to Item table with item_archive table: 
+ * 
+ *                         FK                                  PK
+ *           item_archive: itemID         from item table.    (itemID)
+ *                         archive_itemID from archive table. (serialNumber + itemID)
+ * 
+ * The user is not given the ability to delete entries, this archive class should be used to filter out
+ * items from showing in available stock.
+ */
 public class archiveItem {
 
     private Item selectedItem;
     private int archiveID;
 
+    //Constructor
     public archiveItem(Item selectedItem){
         this.selectedItem = selectedItem;
         this.archiveID = selectedItem.getserialNumber() + selectedItem.getitemID();
         saveToDatabase();
     }
 
+    // Method to save an archived item to the database
     public void saveToDatabase() {
         try {
+            // Establish connection to the database
             Connection connection = DatabaseManager.getConnection();
+
             // Define the columns explicitly, excluding the first key attribute.
             // Update query for main archive table.
             String insertQuery = "INSERT INTO archive (itemID, name, category, brand, dateManufactured, serialNumber, manufacturerPrice, retailPrice, description) " +
@@ -44,7 +60,9 @@ public class archiveItem {
         }
 
         try {
+            // Establish connection to the database
             Connection connection = DatabaseManager.getConnection();
+
             // Update query for the linked table.
             String insertItemArchiveQuery = "INSERT INTO item_archive (itemID, archive_itemID) VALUES (?, ?)";
             PreparedStatement itemArchiveStatement = connection.prepareStatement(insertItemArchiveQuery);
@@ -67,4 +85,14 @@ public class archiveItem {
             e.printStackTrace();
         }
     }
+
+    // Getters and Setters.
+    public Item getSelectedItem() {return selectedItem;}
+
+    public void setSelectedItem(Item selectedItem) {this.selectedItem = selectedItem;}
+
+    public int getArchiveID() {return archiveID;}
+
+    public void setArchiveID(int archiveID) {this.archiveID = archiveID;}
+
 }

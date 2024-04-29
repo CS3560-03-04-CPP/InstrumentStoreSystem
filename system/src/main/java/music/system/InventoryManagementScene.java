@@ -3,7 +3,6 @@ package music.system;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -33,6 +32,17 @@ import javafx.stage.Stage;
 import music.system.SystemClasses.Item;
 import music.system.SystemClasses.archiveItem;
 
+/**
+ * JavaFX Scene, InventoryManagementScene: This scene opens the main item management form.
+ * 
+ * Functionality: Add an instrument --> opens new form to fillout
+ *                Edit an instruemnt --> opens new form to fillout for the highlighted item
+ *                Archive an instrument --> archives highlighted item
+ *                Close --> closes the form
+ * 
+ * Methods for add, edit, and archive are public and can be called from other GUI interactions.
+ * 
+ */
 public class InventoryManagementScene {
     @SuppressWarnings("unchecked")
     public static void displayInstrumentManagement() {
@@ -73,141 +83,20 @@ public class InventoryManagementScene {
 
         tableView.getColumns().addAll(itemIDColumn, nameColumn, categoryColumn, brandColumn, dateManufacturedColumn, serialNumberColumn, manufacturerPriceColumn, retailPriceColumn, descriptionColumn);
 
+        // Connecting buttons to their methods.
         Button addButton = new Button("Add");
-        addButton.setOnAction(event -> {
-            addItem(tableView);
-            });
+        addButton.setOnAction(event -> {addItem(tableView);});
 
-            Button editButton = new Button("Edit");
-            editButton.setOnAction(event -> {
-                // Get the selected item from the table
-                Item selectedItem = tableView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    // Create an alert dialog for editing
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Edit Item");
-                    alert.setHeaderText("Edit the item details.");
-            
-                    // Create input fields and set their initial values to the selected item's properties
-                    TextField nameField = new TextField(selectedItem.getName());
-                    TextField categoryField = new TextField(selectedItem.getCategory());
-                    TextField brandField = new TextField(selectedItem.getBrand());
-                    DatePicker dateManufacturedPicker = new DatePicker(LocalDate.parse(selectedItem.getdateManufactured()));
-                    TextField serialNumberField = new TextField(String.valueOf(selectedItem.getserialNumber()));
-                    TextField manufacturerPriceField = new TextField(String.valueOf(selectedItem.getmanufacturerPrice()));
-                    TextField retailPriceField = new TextField(String.valueOf(selectedItem.getretailPrice()));
-                    TextField descriptionField = new TextField(selectedItem.getDescription());
-                    
-                    // Create a grid pane to layout the fields
-                    GridPane grid = new GridPane();
-                    grid.addRow(0, new Label("Name:"), nameField);
-                    grid.addRow(1, new Label("Category:"), categoryField);
-                    grid.addRow(2, new Label("Brand:"), brandField);
-                    grid.addRow(3, new Label("Date Manufactured:"), dateManufacturedPicker);
-                    grid.addRow(4, new Label("Serial Number:"), serialNumberField);
-                    grid.addRow(5, new Label("Manufacturer Price:"), manufacturerPriceField);
-                    grid.addRow(6, new Label("Retail Price:"), retailPriceField);
-                    grid.addRow(7, new Label("Description:"), descriptionField);
-            
-                    alert.getDialogPane().setContent(grid);
-            
-                    // Add save and cancel buttons
-                    ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(saveButtonType, ButtonType.CANCEL);
-            
-                    // Handle save button action
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.isPresent() && result.get() == saveButtonType) {
+        Button editButton = new Button("Edit");
+        editButton.setOnAction(event -> {editItem(tableView);});
 
-                        // Format date.
-                        LocalDate date = dateManufacturedPicker.getValue();
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-                        String formattedDate = date.format(formatter);
-                        
+        Button archiveButton = new Button("Archive Instrument");
+        archiveButton.setOnAction(event -> {archiveItem(tableView);});
 
-                        // Validate input fields
-                        if (validateFields(nameField.getText(), categoryField.getText(), formattedDate, Integer.parseInt(serialNumberField.getText()), Double.parseDouble(manufacturerPriceField.getText()), Double.parseDouble(retailPriceField.getText()), descriptionField.getText())) {
-                            // Retrieve the entered values and update the item
-                            String name = nameField.getText();
-                            String category = categoryField.getText();
-                            String brand = brandField.getText();
-                            String dateManufactured = formattedDate;
-                            int serialNumber = Integer.parseInt(serialNumberField.getText());
-                            double manufacturerPrice = Double.parseDouble(manufacturerPriceField.getText());
-                            double retailPrice = Double.parseDouble(retailPriceField.getText());
-                            String description = descriptionField.getText();
-            
-                            // Update the selected item
-                            selectedItem.setName(name);
-                            selectedItem.setCategory(category);
-                            selectedItem.setBrand(brand);
-                            selectedItem.setdateManufactured(dateManufactured);
-                            selectedItem.setSerialNumber(serialNumber);
-                            selectedItem.setmanufacturerPrice(manufacturerPrice);
-                            selectedItem.setretailPrice(retailPrice);
-                            selectedItem.setDescription(description);
-            
-                            // Update the item in the database
-                            updateItemInDatabase(selectedItem.getitemID(), name, category, brand, dateManufactured, serialNumber, manufacturerPrice, retailPrice, description);
-                            // Refresh the table view
-                            populateInstrumentData(tableView);
-                        } else {
-                            // Validation failed, display error message
-                            Alert validationAlert = new Alert(Alert.AlertType.ERROR);
-                            validationAlert.setTitle("Validation Error");
-                            validationAlert.setHeaderText(null);
-                            validationAlert.setContentText("Please fill out all fields with valid values.");
-                            validationAlert.showAndWait();
-                        }
-                    } else {
-                        // User clicked cancel or closed the dialog
-                        System.out.println("Edit item operation canceled.");
-                    }
-                } else {
-                    // No item selected, display error message
-                    Alert noItemSelectedAlert = new Alert(Alert.AlertType.WARNING);
-                    noItemSelectedAlert.setTitle("No Item Selected");
-                    noItemSelectedAlert.setHeaderText(null);
-                    noItemSelectedAlert.setContentText("Please select an item to edit.");
-                    noItemSelectedAlert.showAndWait();
-                }
-            });
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(event -> {primaryStage.close();});
 
-            Button archiveButton = new Button("Archive Instrument");
-            archiveButton.setOnAction(event -> {
-                Item selectedItem = tableView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmation.setTitle("Confirmation");
-                    confirmation.setHeaderText("Archive Confirmation");
-                    confirmation.setContentText("Are you sure you want to archive this item?");
-                    
-                    // Adding button types
-                    ButtonType yesButton = new ButtonType("Yes");
-                    ButtonType noButton = new ButtonType("No");
-
-                    confirmation.getButtonTypes().setAll(yesButton, noButton);
-
-                    // Handling user's choice
-                    confirmation.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType == yesButton) {
-                            new archiveItem(selectedItem);
-                            System.out.println("Item archived!");
-                            
-                            // Refresh the table view
-                            populateInstrumentData(tableView);
-                        }
-                    });
-                }
-            });
-
-            // Close button
-            Button closeButton = new Button("Close");
-            closeButton.setOnAction(event -> {
-            try {DatabaseManager.closeConnection();} catch (SQLException e) {}
-            primaryStage.close(); // Close the application
-        });
-
+        // Finishing scene elemenets
         VBox vbox = new VBox();
         HBox hbox = new HBox();
         vbox.getChildren().addAll(tableView);
@@ -220,6 +109,7 @@ public class InventoryManagementScene {
 
     }
 
+    //Button methods
     @SuppressWarnings("unchecked")
     public static void addItem(@SuppressWarnings({ "exports", "rawtypes" }) TableView tableView){
         // Create an alert dialog
@@ -321,6 +211,129 @@ public class InventoryManagementScene {
                 // User clicked cancel or closed the dialog
                 System.out.println("Add new item operation canceled.");
             }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void editItem(@SuppressWarnings({ "exports", "rawtypes" }) TableView tableView){
+        // Get the selected item from the table
+        Item selectedItem = (Item) tableView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            
+                // Create an alert dialog for editing
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Edit Item");
+            alert.setHeaderText("Edit the item details.");
+
+            // Create input fields and set their initial values to the selected item's properties
+            TextField nameField = new TextField(selectedItem.getName());
+            TextField categoryField = new TextField(selectedItem.getCategory());
+            TextField brandField = new TextField(selectedItem.getBrand());
+            DatePicker dateManufacturedPicker = new DatePicker(LocalDate.parse(selectedItem.getdateManufactured()));
+            TextField serialNumberField = new TextField(String.valueOf(selectedItem.getserialNumber()));
+            TextField manufacturerPriceField = new TextField(String.valueOf(selectedItem.getmanufacturerPrice()));
+            TextField retailPriceField = new TextField(String.valueOf(selectedItem.getretailPrice()));
+            TextField descriptionField = new TextField(selectedItem.getDescription());
+            
+            // Create a grid pane to layout the fields
+            GridPane grid = new GridPane();
+            grid.addRow(0, new Label("Name:"), nameField);
+            grid.addRow(1, new Label("Category:"), categoryField);
+            grid.addRow(2, new Label("Brand:"), brandField);
+            grid.addRow(3, new Label("Date Manufactured:"), dateManufacturedPicker);
+            grid.addRow(4, new Label("Serial Number:"), serialNumberField);
+            grid.addRow(5, new Label("Manufacturer Price:"), manufacturerPriceField);
+            grid.addRow(6, new Label("Retail Price:"), retailPriceField);
+            grid.addRow(7, new Label("Description:"), descriptionField);
+
+            alert.getDialogPane().setContent(grid);
+
+            // Add save and cancel buttons
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(saveButtonType, ButtonType.CANCEL);
+
+            // Handle save button action
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == saveButtonType) {
+
+                // Format date.
+                LocalDate date = dateManufacturedPicker.getValue();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+                String formattedDate = date.format(formatter);
+                
+
+                // Validate input fields
+                if (validateFields(nameField.getText(), categoryField.getText(), formattedDate, Integer.parseInt(serialNumberField.getText()), Double.parseDouble(manufacturerPriceField.getText()), Double.parseDouble(retailPriceField.getText()), descriptionField.getText())) {
+                    // Retrieve the entered values and update the item
+                    String name = nameField.getText();
+                    String category = categoryField.getText();
+                    String brand = brandField.getText();
+                    String dateManufactured = formattedDate;
+                    int serialNumber = Integer.parseInt(serialNumberField.getText());
+                    double manufacturerPrice = Double.parseDouble(manufacturerPriceField.getText());
+                    double retailPrice = Double.parseDouble(retailPriceField.getText());
+                    String description = descriptionField.getText();
+
+                    // Update the selected item
+                    selectedItem.setName(name);
+                    selectedItem.setCategory(category);
+                    selectedItem.setBrand(brand);
+                    selectedItem.setdateManufactured(dateManufactured);
+                    selectedItem.setSerialNumber(serialNumber);
+                    selectedItem.setmanufacturerPrice(manufacturerPrice);
+                    selectedItem.setretailPrice(retailPrice);
+                    selectedItem.setDescription(description);
+
+                    // Update the item in the database
+                    updateItemInDatabase(selectedItem.getitemID(), name, category, brand, dateManufactured, serialNumber, manufacturerPrice, retailPrice, description);
+                    // Refresh the table view
+                    populateInstrumentData(tableView);
+                } else {
+                    // Validation failed, display error message
+                    Alert validationAlert = new Alert(Alert.AlertType.ERROR);
+                    validationAlert.setTitle("Validation Error");
+                    validationAlert.setHeaderText(null);
+                    validationAlert.setContentText("Please fill out all fields with valid values.");
+                    validationAlert.showAndWait();
+                }
+            } else {
+                // User clicked cancel or closed the dialog
+                System.out.println("Edit item operation canceled.");
+            }
+        } else {
+            // No item selected, display error message
+            Alert noItemSelectedAlert = new Alert(Alert.AlertType.WARNING);
+            noItemSelectedAlert.setTitle("No Item Selected");
+            noItemSelectedAlert.setHeaderText(null);
+            noItemSelectedAlert.setContentText("Please select an item to edit.");
+            noItemSelectedAlert.showAndWait();
+        }
+    }
+
+    public static void archiveItem(@SuppressWarnings("exports") TableView<Item> tableView) {
+        Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setTitle("Confirmation");
+            confirmation.setHeaderText("Archive Confirmation");
+            confirmation.setContentText("Are you sure you want to archive this item?");
+            
+            // Adding button types
+            ButtonType yesButton = new ButtonType("Yes");
+            ButtonType noButton = new ButtonType("No");
+
+            confirmation.getButtonTypes().setAll(yesButton, noButton);
+
+            // Handling user's choice
+            confirmation.showAndWait().ifPresent(buttonType -> {
+                if (buttonType == yesButton) {
+                    new archiveItem(selectedItem);
+                    System.out.println("Item archived!");
+                    
+                    // Refresh the table view
+                    populateInstrumentData(tableView);
+                }
+            });
+        }
     }
 
     private static boolean validateFields(String name, String category, String formattedDate, int serialNumber, double manufacturerPrice, double retailPrice, String description) {

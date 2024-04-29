@@ -15,6 +15,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.InventoryAnalytics;
 
+/**
+ * JavaFX Scene, InventoryAnalyticsScene: This scene opens the generate analyitics form.
+ * 
+ * Functionality: Opens a javaFX window that shows a single newly generated analyitics form.
+ *                It also generates two pie charts based on that data.
+ */
 public class InventoryAnalyticsScene {
 
     @SuppressWarnings("unchecked")

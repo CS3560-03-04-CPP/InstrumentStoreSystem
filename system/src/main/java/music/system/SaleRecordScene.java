@@ -16,6 +16,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import music.system.SystemClasses.SaleRecord;
 
+/**
+ * JavaFX Scene, SaleRecordScene: This scene opens the Sale Records window.
+ * 
+ * Functionality: Displays all the entries in the sale records table. 
+ *                Search bar which takes in Phone Number.
+ * 
+ */
 public class SaleRecordScene {
 
     @SuppressWarnings("unchecked")
