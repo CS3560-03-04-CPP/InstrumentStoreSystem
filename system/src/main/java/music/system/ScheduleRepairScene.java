@@ -73,7 +73,7 @@ public class ScheduleRepairScene {
         layout.getChildren().addAll(nameLabel, nameField, descriptionLabel, descriptionField, fixPriceLabel, fixPriceField, addButton);
 
         // Set scene
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout, 300, 250);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

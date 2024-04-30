@@ -29,9 +29,9 @@ public class StoreRecord {
     }
 
     // Save to MySQL method
-    public void saveToMySQL(int PurchaseDescription, Integer id) {
+    public void saveToMySQL(Integer id) {
 
-        transactionID = PurchaseDescription + id;
+
         try {
             // Establish connection to MySQL database
             Connection connection = DatabaseManager.getConnection();
@@ -63,7 +63,7 @@ public class StoreRecord {
 
             // Create PreparedStatement
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, transactionID);
+            preparedStatement.setInt(1, id);
             preparedStatement.setString(2, invoiceNumber);
 
             // Execute the insert query

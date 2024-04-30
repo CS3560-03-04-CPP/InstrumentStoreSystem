@@ -89,6 +89,8 @@ public class SaleRecord {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     public static java.sql.Date convertStringToDate(String dateString) {
@@ -116,6 +118,6 @@ public class SaleRecord {
 
     public void setSoldPrice(double soldPrice) {this.soldPriceProperty.set(soldPrice);}
 
-    public String getOrderId() {return itemID.toString();}
+    public Integer getOrderId() {return itemID.get();}
 
 }

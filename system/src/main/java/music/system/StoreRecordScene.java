@@ -57,7 +57,7 @@ public class StoreRecordScene {
         VBox vbox = new VBox();
         vbox.getChildren().addAll(searchField, tableView);
 
-        Scene scene = new Scene(vbox, 600, 400);
+        Scene scene = new Scene(vbox, 250, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -101,14 +101,18 @@ public class StoreRecordScene {
         }
     }
 
-    // Method to filter records based on invoice number
-    private static void filterRecords(TableView<StoreRecord> tableView, String invoiceNumber) {
-        ObservableList<StoreRecord> filteredData = FXCollections.observableArrayList();
-        for (StoreRecord record : tableView.getItems()) {
-            if (record.getInvoiceNumber().contains(invoiceNumber)) {
-                filteredData.add(record);
+     // Method to filter records by name
+     private static void filterRecords(TableView<StoreRecord> tableView, String searchText) {
+        if (searchText.isEmpty()) {
+            populateStoreRecords(tableView);
+        } else {
+            ObservableList<StoreRecord> filteredData = FXCollections.observableArrayList();
+            for (StoreRecord record : tableView.getItems()) {
+                if (record.getInvoiceNumber().contains(searchText.toLowerCase())){
+                    filteredData.add(record);
+                }
             }
+            tableView.setItems(filteredData);
         }
-        tableView.setItems(filteredData);
     }
 }

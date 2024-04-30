@@ -33,7 +33,7 @@ public class SaleRecordScene {
         TableView<SaleRecord> tableView = new TableView<>();
 
         TableColumn<SaleRecord, String> orderIdColumn = new TableColumn<>("Order ID");
-        orderIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOrderId()));
+        orderIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOrderId().toString()));
 
         TableColumn<SaleRecord, String> DateColumn = new TableColumn<>("Date");
         DateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDate()));
@@ -51,7 +51,7 @@ public class SaleRecordScene {
 
         // TextField for search bar
         TextField searchField = new TextField();
-        searchField.setPromptText("Search by Phone Number");
+        searchField.setPromptText("Search by Name");
 
         // Add listener to react to user input in the search bar
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -61,7 +61,7 @@ public class SaleRecordScene {
         VBox vbox = new VBox();
         vbox.getChildren().addAll(searchField, tableView);
 
-        Scene scene = new Scene(vbox, 600, 400);
+        Scene scene = new Scene(vbox, 320, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -90,7 +90,7 @@ public class SaleRecordScene {
                         resultSet.getString("date"),
                         resultSet.getString("buyer_name"),
                         resultSet.getDouble("sold_price"),
-                        resultSet.getInt("itemID")
+                        resultSet.getInt("item_ID")
                 );
                 saleRecords.add(saleRecord);
             }
@@ -107,14 +107,18 @@ public class SaleRecordScene {
         }
     }
 
-    // Method to filter records based on phone number
-    private static void filterRecords(TableView<SaleRecord> tableView, String name) {
-        ObservableList<SaleRecord> filteredData = FXCollections.observableArrayList();
-        for (SaleRecord record : tableView.getItems()) {
-            if (record.getBuyerName().contains(name)) {
-                filteredData.add(record);
+    // Method to filter records by name
+    private static void filterRecords(TableView<SaleRecord> tableView, String searchText) {
+        if (searchText.isEmpty()) {
+            populateSaleRecords(tableView);
+        } else {
+            ObservableList<SaleRecord> filteredData = FXCollections.observableArrayList();
+            for (SaleRecord record : tableView.getItems()) {
+                if (record.getBuyerName().toLowerCase().contains(searchText.toLowerCase())){
+                    filteredData.add(record);
+                }
             }
+            tableView.setItems(filteredData);
         }
-        tableView.setItems(filteredData);
     }
 }

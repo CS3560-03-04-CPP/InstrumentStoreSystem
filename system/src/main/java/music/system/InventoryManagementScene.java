@@ -102,7 +102,7 @@ public class InventoryManagementScene {
         vbox.getChildren().addAll(tableView);
         hbox.getChildren().addAll(addButton, editButton, archiveButton, closeButton);
         vbox.getChildren().add(hbox);
-        Scene scene = new Scene(vbox, 800, 400);
+        Scene scene = new Scene(vbox, 1000, 400);
         primaryStage.setScene(scene);
         populateInstrumentData(tableView);
         primaryStage.show();
@@ -136,6 +136,8 @@ public class InventoryManagementScene {
         retailPriceField.setPromptText("Retail Price");
         TextField descriptionField = new TextField();
         descriptionField.setPromptText("Description");
+        TextField attributesField = new TextField();
+        attributesField.setPromptText("Attributes (comma-separated)");
         
         // Create a grid pane to layout the fields
         GridPane grid = new GridPane();
@@ -147,6 +149,7 @@ public class InventoryManagementScene {
         grid.addRow(5, new Label("Manufacturer Price:"), manufacturerPriceField);
         grid.addRow(6, new Label("Retail Price:"), retailPriceField);
         grid.addRow(7, new Label("Description:"), descriptionField);
+        grid.addRow(8, new Label("Attributes:"), attributesField);
         
         alert.getDialogPane().setContent(grid);
         
@@ -158,6 +161,14 @@ public class InventoryManagementScene {
         // Handle save button action
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == saveButtonType) {
+
+            String attributesString = attributesField.getText();
+            String[] attributes = attributesString.split(",");
+
+            if (attributes.length >= 3){
+                saveNewItemToDatabase(attributes[0], attributes[1], attributes[2], attributes[3], Integer.parseInt(attributes[4]), Double.parseDouble(attributes[5]), Double.parseDouble(attributes[6]), attributes[7]);
+                populateInstrumentData(tableView);
+            }else{
 
              // Format date.
              LocalDate date = dateManufacturedPicker.getValue();
@@ -206,11 +217,13 @@ public class InventoryManagementScene {
                  validationAlert.setHeaderText(null);
                  validationAlert.setContentText("Please fill out all fields with valid values.");
                  validationAlert.showAndWait();
-            }               
+            }   
+            }              
             } else {
                 // User clicked cancel or closed the dialog
                 System.out.println("Add new item operation canceled.");
             }
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -326,7 +339,7 @@ public class InventoryManagementScene {
             // Handling user's choice
             confirmation.showAndWait().ifPresent(buttonType -> {
                 if (buttonType == yesButton) {
-                    new archiveItem(selectedItem);
+                    new archiveItem(selectedItem.getserialNumber(), selectedItem.getitemID());
                     System.out.println("Item archived!");
                     
                     // Refresh the table view
@@ -451,7 +464,7 @@ public class InventoryManagementScene {
             Connection connection = DatabaseManager.getConnection();
     
             // Define SQL query to select all non-archived records from the database
-            String query = "SELECT * FROM item WHERE itemID NOT IN (SELECT itemID FROM item_archive)";
+            String query = "SELECT * FROM item WHERE itemID NOT IN (SELECT itemID FROM item_archive) AND itemID NOT IN (SELECT item_itemID FROM sale_transactions)";
     
             // Create a Statement
             Statement statement = connection.createStatement();

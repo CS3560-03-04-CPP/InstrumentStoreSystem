@@ -15,29 +15,29 @@ package music.system.SystemClasses;
  */
 public class Employee {
 
-    private int employeeID;
-    private String name;
-    private String position;
+    public static int employeeID;
+    public static  String name;
+    public static String position;
 
     // Constructor
     public Employee(int employeeID, String name, String position) {
 
-        this.employeeID = employeeID;
-        this.name = name;
-        this.position = position;
+        Employee.employeeID = employeeID;
+        Employee.name = name;
+        Employee.position = position;
     }
 
     // Getters and setters
     public int getID() {return employeeID;}
 
-    public void setID(int id) {this.employeeID = id;}
+    public void setID(int id) {Employee.employeeID = id;}
 
-    public String getName() {return name;}
+    public static String getName() {return name;}
 
-    public void setName(String name) {this.name = name;}
+    public void setName(String name) {Employee.name = name;}
 
     public String getPosition() {return position;}
 
-    public void setPosition(String pos) {this.position = pos;}
+    public void setPosition(String pos) {Employee.position = pos;}
 
 }

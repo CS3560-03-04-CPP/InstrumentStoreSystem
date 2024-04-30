@@ -1,70 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="music.system.InventoryPage">
    <children>
+      <SplitPane dividerPositions="0.12200208550573514" prefHeight="1080.0" prefWidth="1920.0">
+        <items>
+          <AnchorPane maxWidth="225" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="1489.0" fitWidth="2526.0" layoutX="-2250.0" layoutY="-30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@jema_lh_058_09.jpg" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="handle_username" fitHeight="305.0" fitWidth="200.0" layoutX="14.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true" scaleY="2.0">
+                           <image>
+                              <Image url="@SignInBox.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="148.0" fitWidth="171.0" layoutX="40.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@PersonIcon.jpg" />
+                           </image>
+                        </ImageView>
+                        <Text layoutX="61.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome">
+                           <font>
+                              <Font name="Comic Sans MS" size="16.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="handle_user_greet" layoutX="135.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="s">
+                           <font>
+                              <Font name="Comic Sans MS" size="16.0" />
+                           </font>
+                        </Text>
+                        <Button layoutX="61.0" layoutY="203.0" mnemonicParsing="false" onAction="#handle_SignOut" prefHeight="25.0" prefWidth="106.0" text="Sign Out" />
+                        <Text fx:id="username" layoutX="51.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" wrappingWidth="183.609375">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="position" layoutX="51.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Position: " wrappingWidth="183.609375">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <Button layoutX="61.0" layoutY="237.0" mnemonicParsing="false" onAction="#handle_Close" prefHeight="25.0" prefWidth="106.0" text="Quit" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1092.0" prefWidth="881.0">
+               <children>
+                  <TabPane layoutX="-7.0" layoutY="422.0" prefHeight="1059.0" prefWidth="1996.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Inventory Items">
+                          <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="601.0" prefWidth="564.0">
+                                  <children>
+                                      <TableView fx:id="customerTransactionsTableView" layoutX="14.0" layoutY="43.0" prefHeight="445.0" prefWidth="1708.0" AnchorPane.bottomAnchor="542.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="43.0" />
+                                    <Button layoutX="-3.0" layoutY="441.0" mnemonicParsing="false" onAction="#handle_ViewInstrument" prefHeight="79.0" prefWidth="2002.0" text="Manage Inventory" />
+                                    <TextField fx:id="inventorySearchField" layoutX="14.0" layoutY="11.0" onAction="#handle_inventory_search" prefHeight="25.0" prefWidth="355.0" promptText="Search by name, category, brand, or date" />
+                                  </children>
+                              </AnchorPane>
+                          </content>
+                      </Tab>
+                      <Tab text="Records">
+                          <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                  <children>
+                                      <TableView fx:id="recordsTableView1" layoutY="51.0" prefHeight="595.0" prefWidth="333.0" />
+                                      <TableView fx:id="recordsTableView2" layoutX="333.0" layoutY="51.0" prefHeight="595.0" prefWidth="1358.0" />
+                                      <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Store Transaction Records" />
+                                      <Text layoutX="341.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Sale Transaction Records" />
+                                    <TextField fx:id="storeRecordsSearchField" layoutX="9.0" layoutY="23.0" onAction="#handle_storeRecords_search" prefHeight="25.0" prefWidth="299.0" promptText="Search by Invoice Number" />
+                                    <TextField fx:id="saleRecordsSearchField" layoutX="341.0" layoutY="23.0" onAction="#handle_saleRecords_search" prefHeight="25.0" prefWidth="299.0" promptText="Search by Customer's Name" />
+                                  </children>
+                              </AnchorPane>
+                          </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+                  <Button layoutY="22.0" mnemonicParsing="false" onAction="#handle_NewSaleTransaction" prefHeight="400.0" prefWidth="955.0" text="New Customer Sale" />
+                  <Button layoutX="955.0" layoutY="22.0" mnemonicParsing="false" onAction="#handle_NewStoreTransaction" prefHeight="400.0" prefWidth="993.0" text="New Store Inventory" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
        
       <Accordion layoutX="183.0" layoutY="94.0" />
-      <MenuBar layoutY="2.0" prefHeight="13.0" prefWidth="1920.0">
+      <MenuBar prefHeight="25.0" prefWidth="1928.0">
 
-        <menus>
+                                            <menus>
           <Menu mnemonicParsing="false" text="System">
             <items>
-              <MenuItem mnemonicParsing="false" text="Sign Out" onAction="#handle_SignOut"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_SignOut" text="Sign Out" />
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" onAction="#handle_Close"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_Close" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Inventory Managerment">
             <items>
-              <MenuItem mnemonicParsing="false" text="View Instruments" onAction="#handle_ViewInstrument"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_ViewInstrument" text="View Instruments" />
             </items>                                  
             <items>
-              <MenuItem mnemonicParsing="false" text="View Archive" onAction="#handle_ViewArchive"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_ViewArchive" text="View Archive" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Sale Transactions">
             <items>
-              <MenuItem mnemonicParsing="false" text="New Transaction" onAction="#handle_NewSaleTransaction"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_NewSaleTransaction" text="New Transaction" />
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Records" onAction="#handle_SaleRecords"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_SaleRecords" text="Records" />
             </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Store Transactions">
             <items>
-              <MenuItem mnemonicParsing="false" text="New Transaction" onAction="#handle_NewStoreTransaction"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_NewStoreTransaction" text="New Transaction" />
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Records" onAction="#handle_StoreRecords"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_StoreRecords" text="Records" />
             </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Repair">
             <items>
-              <MenuItem mnemonicParsing="false" text="Schedule Repair" onAction="#handle_ScheduleRepair"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_ScheduleRepair" text="Schedule Repair" />
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Repair Status" onAction="#handle_RepairStatus"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_RepairStatus" text="Repair Status" />
             </items>
             </Menu>
            <Menu mnemonicParsing="false" text="Analytics">
             <items>
-              <MenuItem mnemonicParsing="false" text="Generate Analytics" onAction="#handle_GenerateAnalytics"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_GenerateAnalytics" text="Generate Analytics" />
             </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="View Past Analytics" onAction="#handle_ViewPastAnalytics"/>
+              <MenuItem mnemonicParsing="false" onAction="#handle_ViewPastAnalytics" text="View Past Analytics" />
             </items>
           </Menu>
           
-        </menus>
+                                            </menus>
       </MenuBar>
-      <PieChart layoutX="520.0" layoutY="290.0" />
    </children>
 </Pane>

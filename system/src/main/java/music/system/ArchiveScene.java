@@ -64,7 +64,7 @@ public class ArchiveScene {
         VBox vbox = new VBox();
         vbox.getChildren().addAll(tableView);
 
-        Scene scene = new Scene(vbox, 600, 400);
+        Scene scene = new Scene(vbox, 720, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
 

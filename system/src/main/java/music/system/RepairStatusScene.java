@@ -67,7 +67,7 @@ public class RepairStatusScene {
         VBox vbox = new VBox();
         vbox.getChildren().addAll(searchField, tableView);
 
-        Scene scene = new Scene(vbox, 600, 400);
+        Scene scene = new Scene(vbox, 1400, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
 

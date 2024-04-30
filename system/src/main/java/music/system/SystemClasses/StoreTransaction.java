@@ -16,18 +16,14 @@ import music.system.DatabaseManager;
 public class StoreTransaction {
 
     private Date transactionDate;
-    private double totalAmount;
     private String purchaseDescription;
-    private int quantity;
     private double unitPrice;
     private int itemID;
 
     // Constructor
-    public StoreTransaction(Date transactionDate, double totalAmount, String purchaseDescription, int quantity, double unitPrice) {
+    public StoreTransaction(Date transactionDate, String purchaseDescription, double unitPrice) {
         this.transactionDate = transactionDate;
-        this.totalAmount = totalAmount;
         this.purchaseDescription = purchaseDescription;
-        this.quantity = quantity;
         this.unitPrice = unitPrice;
     }
 
@@ -50,18 +46,22 @@ public class StoreTransaction {
                 itemID = resultSet.getInt("last_item_id");
             }
 
+            // Split the string by spaces
+            String[] words = purchaseDescription.split(" ");
+            
+            // Get the last word
+            String lastWord = words[words.length - 1];
+
             // Define SQL query to insert store transaction data into the database
-            query = "INSERT INTO store_transactions (transaction_id, transaction_date, total_amount, purchase_description, quantity, unit_price, item_itemID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            query = "INSERT INTO store_transactions (transaction_id, transaction_date, purchase_description, price, item_itemID) VALUES (?, ?, ?, ?, ?)";
     
             // Create PreparedStatement
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, purchaseDescription.hashCode()+itemID);
+            preparedStatement.setInt(1, lastWord.hashCode()+itemID);
             preparedStatement.setDate(2, new java.sql.Date(transactionDate.getTime()));
-            preparedStatement.setDouble(3, totalAmount);
-            preparedStatement.setString(4, purchaseDescription);
-            preparedStatement.setInt(5, quantity);
-            preparedStatement.setDouble(6, unitPrice);
-            preparedStatement.setInt(7, itemID);
+            preparedStatement.setString(3, purchaseDescription);
+            preparedStatement.setDouble(4, unitPrice);
+            preparedStatement.setInt(5, itemID);
 
             // Execute the insert query
             preparedStatement.executeUpdate();
@@ -82,17 +82,9 @@ public class StoreTransaction {
 
     public void setTransactionDate(Date transactionDate) {this.transactionDate = transactionDate;}
 
-    public double getTotalAmount() {return totalAmount;}
-
-    public void setTotalAmount(double totalAmount) {this.totalAmount = totalAmount;}
-
     public String getPurchaseDescription() {return purchaseDescription;}
 
     public void setPurchaseDescription(String purchaseDescription) {this.purchaseDescription = purchaseDescription;}
-
-    public int getQuantity() {return quantity;}
-
-    public void setQuantity(int quantity) {this.quantity = quantity;}
 
     public double getUnitPrice() {return unitPrice;}
 

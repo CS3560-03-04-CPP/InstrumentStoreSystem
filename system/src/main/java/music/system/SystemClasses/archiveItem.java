@@ -20,13 +20,13 @@ import music.system.DatabaseManager;
  */
 public class archiveItem {
 
-    private Item selectedItem;
     private int archiveID;
+    private int itemID;
 
     //Constructor
-    public archiveItem(Item selectedItem){
-        this.selectedItem = selectedItem;
-        this.archiveID = selectedItem.getserialNumber() + selectedItem.getitemID();
+    public archiveItem(int serialNumber, int itemID){
+        this.archiveID = serialNumber + itemID;
+        this.itemID = itemID;
         saveToDatabase();
     }
 
@@ -42,7 +42,7 @@ public class archiveItem {
                                  "SELECT ?, name, category, brand, dateManufactured, serialNumber, manufacturerPrice, retailPrice, description FROM item WHERE itemID=?";
             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setInt(1, archiveID);
-            preparedStatement.setInt(2, selectedItem.getitemID());
+            preparedStatement.setInt(2, itemID);
 
             // Execute the insert query
             preparedStatement.executeUpdate();
@@ -66,7 +66,7 @@ public class archiveItem {
             // Update query for the linked table.
             String insertItemArchiveQuery = "INSERT INTO item_archive (itemID, archive_itemID) VALUES (?, ?)";
             PreparedStatement itemArchiveStatement = connection.prepareStatement(insertItemArchiveQuery);
-            itemArchiveStatement.setInt(1, selectedItem.getitemID());
+            itemArchiveStatement.setInt(1, itemID);
             itemArchiveStatement.setInt(2, archiveID);
 
             // Execute the insert query
@@ -87,10 +87,6 @@ public class archiveItem {
     }
 
     // Getters and Setters.
-    public Item getSelectedItem() {return selectedItem;}
-
-    public void setSelectedItem(Item selectedItem) {this.selectedItem = selectedItem;}
-
     public int getArchiveID() {return archiveID;}
 
     public void setArchiveID(int archiveID) {this.archiveID = archiveID;}

@@ -30,9 +30,7 @@ import music.system.SystemClasses.StoreTransaction;
 public class StoreTransactionScene {
 
     private static Date transactionDate;
-    private static double totalAmount;
     private static String purchaseDescription;
-    private static int quantity;
     private static double unitPrice;
 
     public static void displayStoreTransactions() {
@@ -47,10 +45,8 @@ public class StoreTransactionScene {
 
         // Labels
         grid.add(new Label("Transaction Date:"), 0, 0);
-        grid.add(new Label("Total Amount:"), 0, 1);
         grid.add(new Label("Purchase Description:"), 0, 2);
-        grid.add(new Label("Quantity:"), 0, 3);
-        grid.add(new Label("Unit Price:"), 0, 4);
+        grid.add(new Label("Price:"), 0, 4);
 
         // Date Picker
         DatePicker datePicker = new DatePicker();
@@ -58,14 +54,8 @@ public class StoreTransactionScene {
         grid.add(datePicker, 1, 0);
 
         // Text Fields
-        TextField totalAmountField = new TextField();
-        grid.add(totalAmountField, 1, 1);
-
         TextField purchaseDescriptionField = new TextField();
         grid.add(purchaseDescriptionField, 1, 2);
-
-        TextField quantityField = new TextField();
-        grid.add(quantityField, 1, 3);
 
         TextField unitPriceField = new TextField();
         grid.add(unitPriceField, 1, 4);
@@ -75,13 +65,11 @@ public class StoreTransactionScene {
         submitButton.setOnAction(event -> {
             try {
                 // Parse totalAmount, quantity, and unitPrice
-                totalAmount = Double.parseDouble(totalAmountField.getText());
-                quantity = Integer.parseInt(quantityField.getText());
                 unitPrice = Double.parseDouble(unitPriceField.getText());
                 
                 // Check for valid totalAmount, quantity, and unitPrice
-                if (totalAmount <= 0 || quantity <= 0 || unitPrice <= 0) {
-                    showAlert("Invalid input", "Total amount, quantity, and unit price must be greater than zero.");
+                if (unitPrice <= 0) {
+                    showAlert("Invalid input", "Price must be greater than zero.");
                     
                 }
                 
@@ -102,14 +90,20 @@ public class StoreTransactionScene {
                 transactionDate = Date.valueOf(selectedDate);
                 purchaseDescription = purchaseDescriptionField.getText();
 
+                 // Split the string by spaces
+                String[] words = purchaseDescription.split(" ");
+            
+                // Get the last word
+                String lastWord = words[words.length - 1];
+
                 // If all inputs are valid, proceed with storing the data                     
                 Integer purchaseDescriptionToInvoice = purchaseDescription.hashCode();
 
-                StoreTransaction StoreTransaction = new StoreTransaction(transactionDate, totalAmount, purchaseDescription, quantity, unitPrice);
+                StoreTransaction StoreTransaction = new StoreTransaction(transactionDate, purchaseDescription, unitPrice);
                 StoreTransaction.saveToMySQL();
 
                 StoreRecord storerecord = new StoreRecord(purchaseDescriptionToInvoice.toString(), transactionDate);
-                storerecord.saveToMySQL(purchaseDescription.hashCode(), StoreTransaction.getId());
+                storerecord.saveToMySQL(lastWord.hashCode() + StoreTransaction.getId());
 
 
             } catch (NumberFormatException e) {

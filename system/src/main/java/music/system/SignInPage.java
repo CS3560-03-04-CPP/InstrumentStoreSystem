@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import music.system.SystemClasses.Employee;
 
 
 /**
@@ -23,6 +24,7 @@ import javafx.scene.text.Text;
 public class SignInPage {
 
     public static int currentUserID;
+    public static String userName;
 
     @FXML
     private Button button;
@@ -35,10 +37,6 @@ public class SignInPage {
 
     public void userLogin(@SuppressWarnings("exports") ActionEvent event) throws IOException {
         checkLogin();
-    }
-
-    public void setCurrentUser(int userID){
-        currentUserID = userID;
     }
 
     // Method to validate user login credentials
@@ -62,9 +60,10 @@ public class SignInPage {
             if (resultSet.next()) {
                 // If a row was returned, login is successful
                 int userID = resultSet.getInt("employeeID");
+                userName = resultSet.getString("username");
+
                 setCurrentUser(userID); // Set the current user id
                 wrongLogin.setText("Success!");
-                App.setRoot("InventoryPage");
             } else {
                 // If no rows were returned, login failed
                 wrongLogin.setText("Wrong username or password!");
@@ -73,5 +72,36 @@ public class SignInPage {
             // Handle any SQL exceptions
             e.printStackTrace();
         }
+
+        String query2 =  "SELECT * FROM employee WHERE users_employeeID = ?";
+
+        try (Connection connection2 = DatabaseManager.getConnection();
+            PreparedStatement preparedStatement2 = connection2.prepareStatement(query2)) {
+
+            preparedStatement2.setInt(1, getCurrentUser());
+
+            ResultSet resultSet2 = preparedStatement2.executeQuery();
+
+            if (resultSet2.next()) {
+                // Fetch data from the current row
+                String name = resultSet2.getString("name");
+                String position = resultSet2.getString("position");
+                String employeeID = resultSet2.getString("users_employeeID");
+    
+                // Create a new Employee object or do something with the data
+                @SuppressWarnings("unused")
+                Employee employee = new Employee(Integer.parseInt(employeeID), name, position);
+                App.setRoot("InventoryPage");
+            }
+
+        } catch (SQLException e) {
+            // Handle any SQL exceptions
+            e.printStackTrace();
+        }
     }
+
+    // Setters and getters
+    public void setCurrentUser(int userID){currentUserID = userID;}
+
+    public int getCurrentUser(){return currentUserID;}
 }
