@@ -2,6 +2,7 @@ package music.system;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import music.system.SystemClasses.Employee;
 import music.system.SystemClasses.Item;
+import music.system.SystemClasses.RepairItem;
 import music.system.SystemClasses.SaleRecord;
 import music.system.SystemClasses.StoreRecord;
 
@@ -28,7 +30,7 @@ import music.system.SystemClasses.StoreRecord;
 /**
  * Application Class, InventoryPage: This class represents the inventory root Stage of the music system application.
  * 
- * The main user GUI interaface which connects all the buttons a user can interact with to their respective classes.
+ * The main user GUI interface which connects all the buttons a user can interact with to their respective classes.
  * 
  */
 public class InventoryPage {
@@ -38,6 +40,8 @@ public class InventoryPage {
     private Text username;
     @FXML
     private Text position;
+    @FXML
+    private TableView<RepairItem> repairsTableView;
     @FXML
     private TableView<Item> customerTransactionsTableView;
     @FXML
@@ -50,8 +54,9 @@ public class InventoryPage {
     private TextField saleRecordsSearchField;
     @FXML
     private TextField inventorySearchField;
-    
     @FXML
+    private TextField repairSearchField;
+    
     public void initialize() {
         handle_user_greet.setText(Employee.getName());
         username.setText("Username: " + SignInPage.userName);
@@ -60,6 +65,7 @@ public class InventoryPage {
         itemTable();
         storeRecordsTable();
         saleRecordsTable();
+        repairTable();
 
 
     }
@@ -184,6 +190,34 @@ public class InventoryPage {
         recordsTableView2.getColumns().addAll(orderIdColumn, DateColumn, buyerNameColumn, soldPriceColumn);
         populateSaleRecordsTableView(recordsTableView2);
     }
+    
+    //Create repairTable for Repairs Tab
+    @SuppressWarnings("unchecked")
+    private void repairTable() {
+       TableColumn<RepairItem, String> statusColumn = new TableColumn<>("Status");
+       statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+       statusColumn.setPrefWidth(100);
+
+       TableColumn<RepairItem, String> nameColumn = new TableColumn<>("Name");
+       nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+       nameColumn.setPrefWidth(200);
+        
+       TableColumn<RepairItem, String> descriptionColumn = new TableColumn<>("Description");
+       descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
+       descriptionColumn.setPrefWidth(350);
+       
+       TableColumn<RepairItem, Double> fixPriceColumn = new TableColumn<>("Fix Price");
+       fixPriceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
+       fixPriceColumn.setPrefWidth(200);
+
+       TableColumn<RepairItem, String> dateColumn = new TableColumn<>("Date Initiated");
+       dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDate().toString()));
+       dateColumn.setPrefWidth(350);
+       
+       repairsTableView.getColumns().addAll(statusColumn, nameColumn, descriptionColumn, fixPriceColumn, dateColumn);
+       populateRepairItems(repairsTableView);
+       
+    }
 
     // Method to populate Store Records TableView
     private static void populateStoreRecordsTableView(TableView<StoreRecord> tableView) {
@@ -307,6 +341,63 @@ public class InventoryPage {
             e.printStackTrace();
         }
     }
+    
+    private static void populateRepairItems(TableView<RepairItem> tableView) {
+        try {
+            // Establish connection to MySQL database
+            Connection connection = DatabaseManager.getConnection();
+    
+            // Define SQL query to select all records from the database
+            String query = "SELECT * FROM repair_items";
+    
+            // Create a Statement
+            Statement statement = connection.createStatement();
+    
+            // Execute the query and get the ResultSet
+            ResultSet resultSet = statement.executeQuery(query);
+    
+            // Initialize the PreparedStatement for updating the status
+            PreparedStatement updateStatement = connection.prepareStatement("UPDATE repair_items SET status = ? WHERE repairId = ?");
+    
+            // Populate TableView with the results
+            ObservableList<RepairItem> repairRecords = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                RepairItem repairRecord = new RepairItem(
+                        resultSet.getString("status"),
+                        resultSet.getString("name"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("fixPrice"),
+                        resultSet.getDate("date")
+                );
+    
+                repairRecord.updateDaysLeft();
+                repairRecord.setStatus(repairRecord.getDaysLeft());
+    
+                // Update the status in the database if updateStatement is not null
+                if (updateStatement != null) {
+                    updateStatement.setString(1, repairRecord.getStatus());
+                    updateStatement.setInt(2, repairRecord.getRepairId());
+                    updateStatement.executeUpdate();
+                } else {
+                    System.out.println("Error: updateStatement is null.");
+                }
+    
+                repairRecords.add(repairRecord);
+            }
+    
+            // Set the items in TableView
+            tableView.setItems(repairRecords);
+    
+            // Close resources
+            resultSet.close();
+            statement.close();
+
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
 
     // Method to filter records by invoice
     private static void filterRecords1(TableView<StoreRecord> tableView, String searchText) {
