@@ -154,6 +154,11 @@ public class InventoryPage {
         filterRecords3(customerTransactionsTableView, inventorySearchField.getText());
     }
 
+    @FXML
+    private void handle_repair_search() {
+        filterRecords4(repairsTableView, repairSearchField.getText());
+    }
+
     @SuppressWarnings("unchecked")
     private void storeRecordsTable() {
         TableColumn<StoreRecord, String> invoiceNumberColumn = new TableColumn<>("Invoice Number");
@@ -440,6 +445,21 @@ public class InventoryPage {
                     record.getBrand().toLowerCase().contains(searchText.toLowerCase()) ||
                     record.getCategory().toLowerCase().contains(searchText.toLowerCase()) ||
                     record.getdateManufactured().toLowerCase().contains(searchText.toLowerCase())){
+                    filteredData.add(record);
+                }
+            }
+            tableView.setItems(filteredData);
+        }
+    }
+
+    // Method to filter records by name
+    private static void filterRecords4(TableView<RepairItem> tableView, String searchText) {
+        if (searchText.isEmpty()) {
+            populateRepairItems(tableView);
+        } else {
+            ObservableList<RepairItem> filteredData = FXCollections.observableArrayList();
+            for (RepairItem record : tableView.getItems()) {
+                if (record.getName().toLowerCase().contains(searchText.toLowerCase())){
                     filteredData.add(record);
                 }
             }
