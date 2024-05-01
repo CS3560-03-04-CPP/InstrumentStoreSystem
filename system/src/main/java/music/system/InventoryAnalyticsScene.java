@@ -71,7 +71,7 @@ public class InventoryAnalyticsScene {
         primaryStage.show();
     
         // Perform analytics and save to database
-        InventoryAnalytics newAnalytics = (InventoryAnalytics) InventoryAnalytics.performAnalyitics();
+        InventoryAnalytics newAnalytics = new InventoryAnalytics(null, 0, 0, 0, 0, 0);
         newAnalytics.saveToDatabase();
     
         // Populate TableView with the new entry
