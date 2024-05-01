@@ -134,7 +134,20 @@ public class InventoryPage {
 
         TableColumn<Item, String> descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
-
+        
+        //on a double click, a new stage will appear to show the image and details of a repair item
+       customerTransactionsTableView.setOnMouseClicked(event -> {
+           if (event.getClickCount() == 2) {
+               //Retrieve selected row
+               Item selectedItem = customerTransactionsTableView.getSelectionModel().getSelectedItem();
+               if (selectedItem != null) {
+                   ViewItem view = new ViewItem();
+                    view.displayItemStage(selectedItem);                
+               }
+           }
+           
+           
+       });
         customerTransactionsTableView.getColumns().addAll(itemIDColumn, nameColumn, categoryColumn, brandColumn, dateManufacturedColumn, serialNumberColumn, manufacturerPriceColumn, retailPriceColumn, descriptionColumn);
         populateCustomerTransactionsTableView(customerTransactionsTableView);
     }

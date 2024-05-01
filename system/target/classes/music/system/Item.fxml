@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="509.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="music.system.ViewItem">
+   <children>
+      <FlowPane fx:id="flowPane" prefHeight="389.0" prefWidth="406.0" />
+      <TextArea fx:id="descriptionField" editable="false" layoutX="6.0" layoutY="423.0" prefHeight="78.0" prefWidth="375.0" />
+      <Label layoutX="6.0" layoutY="404.0" text="Description:" />
+      <Label layoutX="492.0" layoutY="13.0" text="Name:" />
+      <Label layoutX="475.0" layoutY="43.0" text="Category:" />
+      <Label layoutX="484.0" layoutY="78.0" text="Brand:" />
+      <Label layoutX="419.0" layoutY="121.0" text="dateManufactured:" />
+      <Label layoutX="448.0" layoutY="169.0" text="Serial Number:" />
+      <Label layoutX="417.0" layoutY="222.0" text="Manufacturer Price:" />
+      <Label layoutX="465.0" layoutY="262.0" text="Retail Price:" />
+      <TextField fx:id="nameField" editable="false" layoutX="548.0" layoutY="10.0" />
+      <TextField fx:id="categoryField" editable="false" layoutX="548.0" layoutY="40.0" />
+      <TextField fx:id="brandField" editable="false" layoutX="548.0" layoutY="75.0" />
+      <TextField fx:id="dateField" editable="false" layoutX="548.0" layoutY="118.0" />
+      <TextField fx:id="serialField" editable="false" layoutX="548.0" layoutY="153.0" />
+      <TextField fx:id="manufacturerField" editable="false" layoutX="548.0" layoutY="219.0" />
+      <TextField fx:id="retailField" editable="false" layoutX="548.0" layoutY="259.0" />
+   </children>
+</AnchorPane>

@@ -18,11 +18,18 @@ import music.system.DatabaseManager;
  */
 public class ItemPhoto {
 	private Image image;
+        private File file;
+        private int itemID;
 
 	//Constructor which takes a file
 	public ItemPhoto (String imagePath) {
             loadImage(imagePath);
 	}
+        
+        public ItemPhoto (File file, int itemID) {
+            this.file = file;
+            this.itemID = itemID;
+        }
         
     private void loadImage(String imagePath) {
         
@@ -40,15 +47,15 @@ public class ItemPhoto {
             Connection connection = DatabaseManager.getConnection();
                 
             // Define SQL query to insert ItemPhoto data into the database
-            String query = "INSERT INTO item_photos (image) VALUES (?)";
+            String query = "INSERT INTO item_photo (image_data, item_itemID) VALUES (?, ?)";
                 
             // Create PreparedStatement
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            byte[] imageData = imageToByteArray(image);
+            byte[] imageData = readFileToByteArray(file);
 
             // set the byte array as a parameter for the PreparedStatement
             preparedStatement.setBytes(1, imageData);
-
+            preparedStatement.setInt(2, itemID);
             // Execute the query
             preparedStatement.executeUpdate();
 
@@ -73,6 +80,17 @@ public class ItemPhoto {
             // Delete the temporary file
             Files.deleteIfExists(tempFile);
         }
+    }
+    
+    private byte[] readFileToByteArray(File file) {
+        byte[] fileData = null;
+        try (InputStream inputStream = new FileInputStream(file)) {
+            fileData = new byte[(int) file.length()];
+            inputStream.read(fileData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileData;
     }
 
 	// Setters and Getters
