@@ -1,11 +1,13 @@
 package music.system;
 
+import java.io.File;
 import java.util.Calendar;
 import java.sql.Date;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import music.system.SystemClasses.RepairItem;
 
@@ -16,7 +18,9 @@ import music.system.SystemClasses.RepairItem;
  * 
  */
 public class ScheduleRepairScene {
-
+    
+    private static File file; //will contain the photo if user chooses to select one
+    
     public static void displayScheduleRepair() {
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Schedule Repair");
@@ -30,7 +34,22 @@ public class ScheduleRepairScene {
 
         Label fixPriceLabel = new Label("Fix Price:");
         TextField fixPriceField = new TextField();
-
+        
+        //Button to add file
+        Button fileButton = new Button("Add Photo");
+        fileButton.setOnAction(event -> {
+            //Create a FileChooser object from JavaFX
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select Photo");
+            
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+            
+            if (selectedFile != null) {
+                file = selectedFile;
+            }      
+        });
+        
+           
         // Button to send data to the database
         Button addButton = new Button("Add Repair");
         addButton.setOnAction(event -> {
@@ -57,11 +76,13 @@ public class ScheduleRepairScene {
 
             String status = "ongoing";
             // Create RepairItem object
-            RepairItem repairItem = new RepairItem(status, name, description, fixPrice, sqlDate);
+            RepairItem repairItem = new RepairItem(status, name, description, fixPrice, sqlDate, file);
 
             // Call method to insert data into the database
             repairItem.saveToMySQL();
-
+            
+            // delete File from variable after adding to database
+            file = null;
             // Clear fields after adding repair
             nameField.clear();
             descriptionField.clear();
@@ -70,7 +91,7 @@ public class ScheduleRepairScene {
 
         // Create layout and add components
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(nameLabel, nameField, descriptionLabel, descriptionField, fixPriceLabel, fixPriceField, addButton);
+        layout.getChildren().addAll(nameLabel, nameField, descriptionLabel, descriptionField, fixPriceLabel, fixPriceField, fileButton, addButton);
 
         // Set scene
         Scene scene = new Scene(layout, 300, 250);

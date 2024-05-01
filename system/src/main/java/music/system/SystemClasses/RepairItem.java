@@ -1,5 +1,8 @@
 package music.system.SystemClasses;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -33,6 +36,7 @@ public class RepairItem {
     private DoubleProperty fixPriceProperty;         
     private Date date;                   
     private int repairId;
+    private File file;
 
     //Constructor
     public RepairItem(String status, String name, String description, double fixPrice, Date date) {
@@ -43,6 +47,42 @@ public class RepairItem {
         this.date = date;
         updateDaysLeft();
     }
+    
+    public RepairItem(String status, String name, String description, double fixPrice, Date date, File file) {
+        this.statusProperty = new SimpleStringProperty(status); 
+        this.nameProperty = new SimpleStringProperty(name);
+        this.descriptionProperty = new SimpleStringProperty(description);
+        this.fixPriceProperty = new SimpleDoubleProperty(fixPrice);
+        this.date = date;
+        this.file = file;
+        updateDaysLeft();
+    }
+    
+    public RepairItem(int id, String status, String name, String description, double fixPrice, Date date, File file) {
+        this.repairId = id;
+        this.statusProperty = new SimpleStringProperty(status); 
+        this.nameProperty = new SimpleStringProperty(name);
+        this.descriptionProperty = new SimpleStringProperty(description);
+        this.fixPriceProperty = new SimpleDoubleProperty(fixPrice);
+        this.date = date;
+        this.file = file;
+        updateDaysLeft();
+    }
+    
+    public RepairItem(int id, String status, String name, String description, double fixPrice, Date date) {
+        this.repairId = id;
+        this.statusProperty = new SimpleStringProperty(status); 
+        this.nameProperty = new SimpleStringProperty(name);
+        this.descriptionProperty = new SimpleStringProperty(description);
+        this.fixPriceProperty = new SimpleDoubleProperty(fixPrice);
+        this.date = date;
+        this.file = file;
+        updateDaysLeft();
+    }
+    
+    
+    
+    
     
     // Save to MySQL method
     public void saveToMySQL() {
@@ -93,17 +133,37 @@ public class RepairItem {
         // Increment the last primary key value by one
         repairId = lastId + 1;
         
-        // Define SQL query to insert RepairItem data into the database
-        String insertQuery = "INSERT INTO repair_items (repairId, status, name, description, fixPrice, date) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertQuery;
+        PreparedStatement preparedStatement;
+        //Define SQL query to insert RepairItem data into the database
+        if (file == null) {
+            // Define SQL query to insert RepairItem data into the database
+            insertQuery = "INSERT INTO repair_items (repairId, status, name, description, fixPrice, date) VALUES (?, ?, ?, ?, ?, ?)";
 
-        // Create PreparedStatement
-        PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-        preparedStatement.setInt(1, repairId);
-        preparedStatement.setString(2, statusProperty.get());
-        preparedStatement.setString(3, nameProperty.get());
-        preparedStatement.setString(4, descriptionProperty.get());
-        preparedStatement.setDouble(5, fixPriceProperty.get());
-        preparedStatement.setDate(6, sqlDate);
+            // Create PreparedStatement
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setInt(1, repairId);
+            preparedStatement.setString(2, statusProperty.get());
+            preparedStatement.setString(3, nameProperty.get());
+            preparedStatement.setString(4, descriptionProperty.get());
+            preparedStatement.setDouble(5, fixPriceProperty.get());
+            preparedStatement.setDate(6, sqlDate);
+        } else {
+            // Define SQL query to insert RepairItem data into the database
+            insertQuery = "INSERT INTO repair_items (repairId, status, name, description, fixPrice, date, file) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            // Create PreparedStatement
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setInt(1, repairId);
+            preparedStatement.setString(2, statusProperty.get());
+            preparedStatement.setString(3, nameProperty.get());
+            preparedStatement.setString(4, descriptionProperty.get());
+            preparedStatement.setDouble(5, fixPriceProperty.get());
+            preparedStatement.setDate(6, sqlDate);
+            byte[] fileData = readFileToByteArray(file);
+            preparedStatement.setBytes(7, fileData);
+        }
+        
 
         // Execute the insert query
         preparedStatement.executeUpdate();
@@ -168,5 +228,18 @@ public class RepairItem {
     public double getPrice() {return fixPriceProperty.get();}
 
     public String getStatus() {return statusProperty.get();}
+    
+    public File getFile() {return file;}
+    
+    private byte[] readFileToByteArray(File file) {
+        byte[] fileData = null;
+        try (InputStream inputStream = new FileInputStream(file)) {
+            fileData = new byte[(int) file.length()];
+            inputStream.read(fileData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileData;
+    }
 
 }

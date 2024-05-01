@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import music.system.SystemClasses.Employee;
 import music.system.SystemClasses.Item;
 import music.system.SystemClasses.RepairItem;
@@ -199,6 +200,10 @@ public class InventoryPage {
     //Create repairTable for Repairs Tab
     @SuppressWarnings("unchecked")
     private void repairTable() {
+       TableColumn<RepairItem, Integer> repairIDColumn = new TableColumn<>("Item ID");
+       repairIDColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getRepairId()).asObject());
+       repairIDColumn.setPrefWidth(50);
+       
        TableColumn<RepairItem, String> statusColumn = new TableColumn<>("Status");
        statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
        statusColumn.setPrefWidth(100);
@@ -219,8 +224,22 @@ public class InventoryPage {
        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDate().toString()));
        dateColumn.setPrefWidth(350);
        
-       repairsTableView.getColumns().addAll(statusColumn, nameColumn, descriptionColumn, fixPriceColumn, dateColumn);
+       repairsTableView.getColumns().addAll(repairIDColumn, statusColumn, nameColumn, descriptionColumn, fixPriceColumn, dateColumn);
        populateRepairItems(repairsTableView);
+       
+       //on a double click, a new stage will appear to show the image and details of a repair item
+       repairsTableView.setOnMouseClicked(event -> {
+           if (event.getClickCount() == 2) {
+               //Retrieve selected row
+               RepairItem selectedRepair = repairsTableView.getSelectionModel().getSelectedItem();
+               if (selectedRepair != null) {
+                   ViewRepairItem view = new ViewRepairItem();
+                   view.displayRepairStage(selectedRepair);
+               }
+           }
+           
+           
+       });
        
     }
 
@@ -368,6 +387,7 @@ public class InventoryPage {
             ObservableList<RepairItem> repairRecords = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 RepairItem repairRecord = new RepairItem(
+                        resultSet.getInt("repairId"),
                         resultSet.getString("status"),
                         resultSet.getString("name"),
                         resultSet.getString("description"),
@@ -466,7 +486,7 @@ public class InventoryPage {
             tableView.setItems(filteredData);
         }
     }
-
+    
     private static void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

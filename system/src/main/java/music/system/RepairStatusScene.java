@@ -1,5 +1,7 @@
 package music.system;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,11 +9,14 @@ import java.sql.Statement;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -32,7 +37,11 @@ public class RepairStatusScene {
        primaryStage.setTitle("Current Repairs");
 
        TableView<RepairItem> tableView = new TableView<>();
-
+       
+       TableColumn<RepairItem, Integer> repairIDColumn = new TableColumn<>("Item ID");
+       repairIDColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getRepairId()).asObject());
+       repairIDColumn.setPrefWidth(50);
+               
        TableColumn<RepairItem, String> statusColumn = new TableColumn<>("Status");
        statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
        statusColumn.setPrefWidth(200);
@@ -53,7 +62,21 @@ public class RepairStatusScene {
        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDate().toString()));
        dateColumn.setPrefWidth(350);
        
-       tableView.getColumns().addAll(statusColumn, nameColumn, descriptionColumn, fixPriceColumn, dateColumn);
+       tableView.getColumns().addAll(repairIDColumn, statusColumn, nameColumn, descriptionColumn, fixPriceColumn, dateColumn);
+       
+       //on a double click, a new stage will appear to show the image and details of a repair item
+       tableView.setOnMouseClicked(event -> {
+           if (event.getClickCount() == 2) {
+               //Retrieve selected row
+               RepairItem selectedRepair = tableView.getSelectionModel().getSelectedItem();
+               if (selectedRepair != null) {
+                   ViewRepairItem view = new ViewRepairItem();
+                    view.displayRepairStage(selectedRepair);                
+               }
+           }
+           
+           
+       });
        
        // TextField for search bar
        TextField searchField = new TextField();
@@ -96,12 +119,15 @@ public class RepairStatusScene {
             ObservableList<RepairItem> repairRecords = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 RepairItem repairRecord = new RepairItem(
+                        resultSet.getInt("repairId"),
                         resultSet.getString("status"),
                         resultSet.getString("name"),
                         resultSet.getString("description"),
                         resultSet.getDouble("fixPrice"),
                         resultSet.getDate("date")
                 );
+                
+                
     
                 repairRecord.updateDaysLeft();
                 repairRecord.setStatus(repairRecord.getDaysLeft());
