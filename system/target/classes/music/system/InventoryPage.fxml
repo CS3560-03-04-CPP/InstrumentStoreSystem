@@ -74,8 +74,8 @@
                           <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="601.0" prefWidth="564.0">
                                   <children>
-                                      <TableView fx:id="customerTransactionsTableView" layoutX="14.0" layoutY="43.0" prefHeight="445.0" prefWidth="1708.0" AnchorPane.bottomAnchor="542.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="43.0" />
-                                    <Button layoutX="-3.0" layoutY="441.0" mnemonicParsing="false" onAction="#handle_ViewInstrument" prefHeight="79.0" prefWidth="2002.0" text="Manage Inventory" />
+                                      <TableView fx:id="customerTransactionsTableView" layoutX="14.0" layoutY="43.0" prefHeight="184.0" prefWidth="1995.0" AnchorPane.bottomAnchor="803.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-13.0" AnchorPane.topAnchor="43.0" />
+                                    <Button layoutX="-3.0" layoutY="244.0" mnemonicParsing="false" onAction="#handle_ViewInstrument" prefHeight="96.0" prefWidth="2002.0" text="Manage Inventory                                                                                                                                                           " />
                                     <TextField fx:id="inventorySearchField" layoutX="14.0" layoutY="11.0" onAction="#handle_inventory_search" prefHeight="25.0" prefWidth="355.0" promptText="Search by name, category, brand, or date" />
                                   </children>
                               </AnchorPane>
@@ -106,8 +106,8 @@
                         </Tab>
                     </tabs>
                   </TabPane>
-                  <Button layoutY="22.0" mnemonicParsing="false" onAction="#handle_NewSaleTransaction" prefHeight="400.0" prefWidth="955.0" text="New Customer Sale" />
-                  <Button layoutX="955.0" layoutY="22.0" mnemonicParsing="false" onAction="#handle_NewStoreTransaction" prefHeight="400.0" prefWidth="993.0" text="New Store Inventory" />
+                  <Button layoutY="22.0" mnemonicParsing="false" onAction="#handle_NewSaleTransaction" prefHeight="400.0" prefWidth="444.0" text="New Customer Sale" />
+                  <Button layoutX="444.0" layoutY="22.0" mnemonicParsing="false" onAction="#handle_NewStoreTransaction" prefHeight="400.0" prefWidth="1242.0" text="New Store Inventory" />
                </children>
             </AnchorPane>
         </items>
