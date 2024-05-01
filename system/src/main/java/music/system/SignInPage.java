@@ -25,6 +25,8 @@ public class SignInPage {
 
     public static int currentUserID;
     public static String userName;
+    public static String position;
+    public Boolean canLogin;
 
     @FXML
     private Button button;
@@ -36,6 +38,7 @@ public class SignInPage {
     private PasswordField password;
 
     public void userLogin(@SuppressWarnings("exports") ActionEvent event) throws IOException {
+        canLogin=false;
         checkLogin();
     }
 
@@ -44,29 +47,39 @@ public class SignInPage {
         
 
         // SQL query to check if username and password match
-        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
-        
+        String query = "SELECT * FROM users WHERE username = ?";
+    
         try (Connection connection = DatabaseManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            // Set parameters for the query
+            // Set parameter for the query
             preparedStatement.setString(1, username.getText().toLowerCase());
-            preparedStatement.setString(2, password.getText().toLowerCase());
 
-            // Execute the query
+            // Execute the query to check if the username exists
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // Check if any rows were returned
             if (resultSet.next()) {
-                // If a row was returned, login is successful
-                int userID = resultSet.getInt("employeeID");
-                userName = resultSet.getString("username");
-
-                setCurrentUser(userID); // Set the current user id
-                wrongLogin.setText("Success!");
+                // If a row was returned, the username exists
+                // Now check if the password matches
+                String storedPassword = resultSet.getString("password");
+                String enteredPassword = password.getText().toLowerCase();
+                
+                if (storedPassword.equals(enteredPassword)) {
+                    // If passwords match, login is successful
+                    int userID = resultSet.getInt("employeeID");
+                    userName = resultSet.getString("username");
+                    setCurrentUser(userID); // Set the current user id
+                    wrongLogin.setText("Success!");
+                    canLogin = true;
+                    
+                } else {
+                    // If passwords don't match, login failed
+                    wrongLogin.setText("Wrong password!");
+                }
             } else {
-                // If no rows were returned, login failed
-                wrongLogin.setText("Wrong username or password!");
+                // If no rows were returned, username doesn't exist
+                wrongLogin.setText("Username does not exist!");
             }
         } catch (SQLException e) {
             // Handle any SQL exceptions
@@ -85,19 +98,22 @@ public class SignInPage {
             if (resultSet2.next()) {
                 // Fetch data from the current row
                 String name = resultSet2.getString("name");
-                String position = resultSet2.getString("position");
+                position = resultSet2.getString("position");
                 String employeeID = resultSet2.getString("users_employeeID");
     
                 // Create a new Employee object or do something with the data
                 @SuppressWarnings("unused")
                 Employee employee = new Employee(Integer.parseInt(employeeID), name, position);
-                App.setRoot("InventoryPage");
             }
+
+            if (canLogin)
+                App.setRoot("InventoryPage");
 
         } catch (SQLException e) {
             // Handle any SQL exceptions
             e.printStackTrace();
         }
+
     }
 
     // Setters and getters

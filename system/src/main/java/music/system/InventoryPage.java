@@ -60,7 +60,7 @@ public class InventoryPage {
     public void initialize() {
         handle_user_greet.setText(Employee.getName());
         username.setText("Username: " + SignInPage.userName);
-        position.setText("Position: " + Employee.position);
+        position.setText("Position: " + SignInPage.position);
 
         itemTable();
         storeRecordsTable();
