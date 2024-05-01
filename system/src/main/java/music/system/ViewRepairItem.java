@@ -8,11 +8,9 @@ import java.io.ByteArrayInputStream;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,7 +41,7 @@ public class ViewRepairItem {
     @FXML
     private TextField dateField;
     
-    public void displayRepairStage(RepairItem repair) {
+    public void displayRepairStage(@SuppressWarnings("exports") RepairItem repair) {
         try {
             // Load FXML file
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RepairItem.fxml"));
@@ -68,7 +66,7 @@ public class ViewRepairItem {
         if (repair != null) {
             try {
                 //get the photo from the database
-                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/instrument_store_system", "username", "password");
+                Connection connection = DatabaseManager.getConnection();
                 int repairItemId = repair.getRepairId();
                 
                 String query = "SELECT file FROM repair_items WHERE repairId= ?";

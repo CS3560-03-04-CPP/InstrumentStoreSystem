@@ -76,7 +76,7 @@ public class RepairItem {
         this.descriptionProperty = new SimpleStringProperty(description);
         this.fixPriceProperty = new SimpleDoubleProperty(fixPrice);
         this.date = date;
-        this.file = file;
+
         updateDaysLeft();
     }
     
